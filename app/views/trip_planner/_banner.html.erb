@@ -1,0 +1,150 @@
+<body>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+<!-- Navigation -->
+<nav class='navbar navbar-default navbar-fixed-top'>
+  <div class='container-fluid'>
+    <div class='navbar-header'>
+      <button class='navbar-toggle collapsed' data-target='#navbar1' data-toggle='collapse' type='button'>
+        <span class='sr-only'>Toggle navigation</span>
+        <span class='icon-bar'></span>
+        <span class='icon-bar'></span>
+        <span class='icon-bar'></span>
+      </button>
+      <a class='navbar-brand' href='http://www.tamu.edu'>
+        <img height='45' src='http://brandguide.tamu.edu/images/tam-primarymark.png' width='228'>
+      </a>
+    </div>
+    <div class='navbar-collapse collapse' id='navbar1'>
+      <ul class='nav navbar-nav'>
+        <li>
+          <a data-toggle='modal' href='#dir'>
+            <span class='glyphicon glyphicon-move'></span>
+            Directions
+          </a>
+        </li>
+        <li>
+          <a data-toggle='modal' href='#layer'>
+            <span class='glyphicon glyphicon-menu-hamburger'></span>
+            Layers
+          </a>
+        </li>
+        <li>
+          <a data-toggle='modal' href='#route'>
+            <span class='glyphicon glyphicon glyphicon-road'></span>
+            Routes
+          </a>
+        </li>
+      </ul>
+      <ul class='nav navbar-nav navbar-right'>
+        <li>
+          <a data-toggle='modal' href='#login' style='align: center'>
+            <span class='glyphicon glyphicon-log-in'></span>
+            Login
+          </a>
+        </li>
+      </ul>
+    </div>
+    <!-- /.nav-collapse -->
+  </div>
+  <!-- /.container-fluid -->
+</nav>
+
+<div class='modal fade' id='login' role='dialog'>
+  <div class='modal-dialog' id='loginDlg'>
+    <div class='modal-content'>
+      <div class='modal-header'>
+        <h4 class='modal-title'>Login</h4>
+      </div>
+      <div class='loginStyle'>
+        <div class='form-group' id='loginImg'>
+          <a class='navbar-brand' href='/auth/twitter'>
+            <img class='style_image' height='35' src='http://cdn.androidbeat.com/wp-content/uploads/2014/11/image-Twitter-logo.png' width='35'>
+          </a>
+          <a class='navbar-brand' href='/auth/google_oauth2'>
+            <img class='style_image' height='35' src='http://www.presidentialpressurewashing.net/sitebuilder/images/Red-signin-Small-press-44dp-120x120.png' width='35'>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class='modal fade modeless' data-backdrop='false' id='dir' role='dialog'>
+  <div class='modal-content'>
+    <div class='modal-header'>
+      <button class='close' data-dismiss='modal' type='button'>×</button>
+      <h4 class='modal-title'>Trip planner</h4>
+    </div>
+    <div class='modal-body'>
+      <form id='directionsForm'>
+        <label class='radio-inline'>
+          <input checked='checked' name='optradio' type='radio' value='Bike'>
+          Bike
+        </label>
+        <label class='radio-inline'>
+          <input name='optradio' type='radio' value='Driving'>
+          Driving
+        </label>
+        <label class='radio-inline'>
+          <input name='optradio' type='radio' value='Transit'>
+          Transit
+        </label>
+        <label class='radio-inline'>
+          <input name='optradio' type='radio' value='Walking'>
+          Walking
+        </label>
+      </form>
+      <form id="directionsInputForm" action="/trip_planner/trip_planning" accept-charset="UTF-8" method="post"><input name="utf8" type="hidden" value="&#x2713;" /><input type="hidden" name="authenticity_token" value="aZcTjyOqTS6B5+UA9FuJWjshwsmcHo58cD+AkTCsRFOjvsEMUXH8kDWAxco1FX9O48y2ck3c44KzJQX0V2bdsQ==" />
+        <label for="trip_planner_from">From:</label>
+        <input class="form-control" required="required" type="text" name="trip_planner[from]" id="trip_planner_from" />
+        <label for="trip_planner_to">To:</label>
+        <input class="form-control" required="required" type="text" name="trip_planner[to]" id="trip_planner_to" />
+        <br>
+        <input type="submit" name="commit" value="Find Directions" class="btn btn-default" id="findDirections" data-disable-with="Find Directions" />
+        <button class='btn btn-default pull-right' id='clearDirections'>Clear Directions</button>
+      </form>
+    </div>
+    <div class='modal-footer' id='results' style='overflow-y: auto; max-height: 250px; text-align: center;'>
+      <h5>No Results</h5>
+    </div>
+  </div>
+</div>
+<div class='modal fade modeless' data-backdrop='false' id='layer' role='dialog'>
+  <div class='modal-content'>
+    <div class='modal-header'>
+      <button class='close' data-dismiss='modal' type='button'>×</button>
+      <h4 class='modal-title'>Layers</h4>
+    </div>
+    <div class='modal-body'>
+      <form id='searchForm'>
+        <div class='form-group'>
+          <label class='custom-control custom-checkbox'>
+            <input class='custom-control-input' id='Bikes' name='layer[bicycle]' onclick='toggleMarkers(this);' type='checkbox' value='1'>
+            <span class='custom-control-indicator'></span>
+            <span class='custom-control-description'>Bicycle Racks</span>
+          </label>
+        </div>
+        <div class='form-group'>
+          <label class='custom-control custom-checkbox'>
+            <input class='custom-control-input' id='Building' name='layer[building]' onclick='toggleMarkers(this);' type='checkbox' value='1'>
+            <span class='custom-control-indicator'></span>
+            <span class='custom-control-description'>Academic Buildings</span>
+          </label>
+        </div>
+        <div class='form-group'>
+          <label class='custom-control custom-checkbox'>
+            <input class='custom-control-input' id='Parking' name='layer[parking]' onclick='toggleMarkers(this);' type='checkbox' value='1'>
+            <span class='custom-control-indicator'></span>
+            <span class='custom-control-description'>Parking Lots</span>
+          </label>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+
+
+
+</body>
