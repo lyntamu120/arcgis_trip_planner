@@ -17,23 +17,29 @@ $(document).ready(function(){
         });
 
 
-        var mydata = (function () {
+
+        function routeData(rouNum) {
             var json = null;
+            var routeURL = "http://transport.tamu.edu:80/BusRoutesFeed/api/route/" + rouNum + "/pattern";
             $.ajax({
                 beforeSend: function(req) {
                     req.setRequestHeader("Accept", "application/json");
+                    // req.setRequestHeader("Access-Control-Allow-Origin", "*");
+                    // req.setRequestHeader("Access-Control-Allow-Methods", "GET, PUT, POST, DELETE");
+                    // req.setRequestHeader("Access-Control-Allow-Headers", "Content-Type");
                 },
                 async: false,
                 global: false,
                 //url: "/pattern_27",
-                url: "http://transport.tamu.edu:80/BusRoutesFeed/api/route/27/pattern",
+                url: routeURL,
                 dataType: "json",
                 success: function (data) {
                     json = data;
                 }
             });
             return json;
-        })();
+        }
+
 
 
         gsvc = new GeometryService("http://tasks.arcgisonline.com/ArcGIS/rest/services/Geometry/GeometryServer");
@@ -79,10 +85,16 @@ $(document).ready(function(){
         }
 
         //draw the routes
-        for (var i = 0; i < mydata.length - 1; i++) {
-            var rstparams = projectToLatLong(mydata[i].Longtitude, mydata[i].Latitude, mydata[i + 1].Longtitude, mydata[i + 1].Latitude);
-            drawPolyline(rstparams);
-        }
+         function drawRoutes(routeNum) {
+             var mydata = routeData(routeNum);
+             for (var i = 0; i < mydata.length - 1; i++) {
+                 var rstparams = projectToLatLong(mydata[i].Longtitude, mydata[i].Latitude, mydata[i + 1].Longtitude, mydata[i + 1].Latitude);
+                 drawPolyline(rstparams);
+             }
+         }
+
+        drawRoutes(27);
+
 
     });
 
