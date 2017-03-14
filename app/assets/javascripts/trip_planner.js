@@ -93,7 +93,7 @@ $(document).ready(function(){
              }
          }
 
-        drawRoutes(27);
+         $("#27").click(drawRoutes(26));
 
 
     });

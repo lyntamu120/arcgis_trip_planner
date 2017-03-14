@@ -144,6 +144,139 @@
   </div>
 </div>
 
+<div class='modal fade modeless' data-backdrop='false' id='route' role='dialog'>
+  <div class='modal-content'>
+    <div class='modal-header'>
+      <button class='close' data-dismiss='modal' type='button'>×</button>
+      <h4 class='modal-title'>Routes</h4>
+    </div>
+    <div class='modal-body'>
+      <form id='searchForm'>
+        <h5 class='modal-title'>Off-Campus</h5>
+        <div class='form-group'>
+          <label class='custom-control custom-checkbox'>
+            <input class='custom-control-input' id='Bikes' name='Route[all]' onclick='toggleMarkers(this);' type='checkbox' value='1'>
+            <span class='custom-control-indicator'></span>
+            <span class='custom-control-description'>All</span>
+          </label>
+
+
+          <label class='custom-control custom-checkbox'>
+            <input class='custom-control-input' id='Bikes' name='Route[1]' onclick='toggleMarkers(this);' type='checkbox' value='1'>
+            <span class='custom-control-indicator'></span>
+            <span class='custom-control-description'>12</span>
+          </label>
+
+          <label class='custom-control custom-checkbox'>
+            <input class='custom-control-input' id='Building' name='Route[2]' onclick='toggleMarkers(this);' type='checkbox' value='1'>
+            <span class='custom-control-indicator'></span>
+            <span class='custom-control-description'>15</span>
+          </label>
+
+          <label class='custom-control custom-checkbox'>
+            <input class='custom-control-input' id='Parking' name='Route[3]' onclick='toggleMarkers(this);' type='checkbox' value='1'>
+            <span class='custom-control-indicator'></span>
+            <span class='custom-control-description'>26</span>
+          </label>
+
+          <label class='custom-control custom-checkbox'>
+            <input class='custom-control-input' id='27' name='Route[3]' type='checkbox' value='1'>
+            <span class='custom-control-indicator'></span>
+            <span class='custom-control-description'>27</span>
+          </label>
+
+          <label class='custom-control custom-checkbox'>
+            <input class='custom-control-input' id='Parking' name='Route[3]' onclick='toggleMarkers(this);' type='checkbox' value='1'>
+            <span class='custom-control-indicator'></span>
+            <span class='custom-control-description'>31</span>
+          </label>
+          <label class='custom-control custom-checkbox'>
+            <input class='custom-control-input' id='Parking' name='Route[3]' onclick='toggleMarkers(this);' type='checkbox' value='1'>
+            <span class='custom-control-indicator'></span>
+            <span class='custom-control-description'>34</span>
+          </label>
+          <label class='custom-control custom-checkbox'>
+            <input class='custom-control-input' id='Parking' name='Route[3]' onclick='toggleMarkers(this);' type='checkbox' value='1'>
+            <span class='custom-control-indicator'></span>
+            <span class='custom-control-description'>35</span>
+          </label>
+          <label class='custom-control custom-checkbox'>
+            <input class='custom-control-input' id='Parking' name='Route[3]' onclick='toggleMarkers(this);' type='checkbox' value='1'>
+            <span class='custom-control-indicator'></span>
+            <span class='custom-control-description'>36</span>
+          </label>
+          <label class='custom-control custom-checkbox'>
+            <input class='custom-control-input' id='Parking' name='Route[3]' onclick='toggleMarkers(this);' type='checkbox' value='1'>
+            <span class='custom-control-indicator'></span>
+            <span class='custom-control-description'>40</span>
+          </label>
+        </div>
+
+        <h5 class='modal-title'>On-Campus</h5>
+        <div class='form-group'>
+          <label class='custom-control custom-checkbox'>
+            <input class='custom-control-input' id='Bikes' name='Route[all]' onclick='toggleMarkers(this);' type='checkbox' value='1'>
+            <span class='custom-control-indicator'></span>
+            <span class='custom-control-description'>All</span>
+          </label>
+
+
+          <label class='custom-control custom-checkbox'>
+            <input class='custom-control-input' id='Bikes' name='Route[1]' onclick='toggleMarkers(this);' type='checkbox' value='1'>
+            <span class='custom-control-indicator'></span>
+            <span class='custom-control-description'>01</span>
+          </label>
+
+          <label class='custom-control custom-checkbox'>
+            <input class='custom-control-input' id='Building' name='Route[2]' onclick='toggleMarkers(this);' type='checkbox' value='1'>
+            <span class='custom-control-indicator'></span>
+            <span class='custom-control-description'>02</span>
+          </label>
+
+          <label class='custom-control custom-checkbox'>
+            <input class='custom-control-input' id='Parking' name='Route[3]' onclick='toggleMarkers(this);' type='checkbox' value='1'>
+            <span class='custom-control-indicator'></span>
+            <span class='custom-control-description'>03</span>
+          </label>
+
+          <label class='custom-control custom-checkbox'>
+            <input class='custom-control-input' id='Parking' name='Route[3]' onclick='toggleMarkers(this);' type='checkbox' value='1'>
+            <span class='custom-control-indicator'></span>
+            <span class='custom-control-description'>04</span>
+          </label>
+
+          <label class='custom-control custom-checkbox'>
+            <input class='custom-control-input' id='Parking' name='Route[3]' onclick='toggleMarkers(this);' type='checkbox' value='1'>
+            <span class='custom-control-indicator'></span>
+            <span class='custom-control-description'>05</span>
+          </label>
+          <label class='custom-control custom-checkbox'>
+            <input class='custom-control-input' id='Parking' name='Route[3]' onclick='toggleMarkers(this);' type='checkbox' value='1'>
+            <span class='custom-control-indicator'></span>
+            <span class='custom-control-description'>06</span>
+          </label>
+          <label class='custom-control custom-checkbox'>
+            <input class='custom-control-input' id='Parking' name='Route[3]' onclick='toggleMarkers(this);' type='checkbox' value='1'>
+            <span class='custom-control-indicator'></span>
+            <span class='custom-control-description'>08</span>
+          </label>
+          <label class='custom-control custom-checkbox'>
+            <input class='custom-control-input' id='Parking' name='Route[3]' onclick='toggleMarkers(this);' type='checkbox' value='1'>
+            <span class='custom-control-indicator'></span>
+            <span class='custom-control-description'>09</span>
+          </label>
+          <label class='custom-control custom-checkbox'>
+            <input class='custom-control-input' id='Parking' name='Route[3]' onclick='toggleMarkers(this);' type='checkbox' value='1'>
+            <span class='custom-control-indicator'></span>
+            <span class='custom-control-description'>N_W04</span>
+          </label>
+        </div>
+
+      </form>
+    </div>
+  </div>
+</div>
+
 
 
 
