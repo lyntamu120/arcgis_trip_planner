@@ -17,6 +17,27 @@ $(document).ready(function(){
         });
 
 
+        var color = [];
+        color['01'] = [98, 64, 153];
+        color['02'] = [234, 116, 36];
+        color['03'] = [1 ,1, 1];
+        color['04'] = [236, 39, 39];
+        color['05'] = [94, 155, 211];
+        color['06'] = [20, 178, 75];
+        color['08'] = [233, 22, 139];
+        color['09'] = [80, 0, 0];     //may be changed;
+        color['12'] = [0, 84, 166];
+        color['15'] = [40, 144, 58];
+        color['22'] = [189, 26, 141];
+        color['26'] = [0, 111, 59];
+        color['27'] = [0, 174, 239];
+        color['31'] = [102, 45, 145];
+        color['34'] = [234, 116, 36];
+        color['35'] = [96, 56, 19];
+        color['36'] = [150, 115, 72];
+        color['40'] = [255, 255, 0 ];
+        color['N_W04'] = [255, 0, 0];
+
 
         function routeData(rouNum) {
             var json = null;
@@ -44,7 +65,8 @@ $(document).ready(function(){
 
         gsvc = new GeometryService("http://tasks.arcgisonline.com/ArcGIS/rest/services/Geometry/GeometryServer");
 
-        on(map, "load", projectToLatLong);
+        //, "on(mapload", projectToLatLong);
+        on(map,"load", drawRoutes);
 
         function projectToLatLong(Longtitude1, Latitude1, Longtitude2, Latitude2) {
             // map.graphics.clear();
@@ -67,11 +89,11 @@ $(document).ready(function(){
         }
 
 
-        function drawPolyline(params) {
+        function drawPolyline(params, routeNum) {
             gsvc.project(params, function callback(m_mapPoint) {
                 var symbol = new CartographicLineSymbol(
                     CartographicLineSymbol.STYLE_SOLID,
-                    new Color([255, 0, 0]), 5,
+                    new Color(color[routeNum]), 5,
                     CartographicLineSymbol.CAP_ROUND,
                     CartographicLineSymbol.JOIN_MITER, 2
                 );
@@ -84,16 +106,37 @@ $(document).ready(function(){
             });
         }
 
+
         //draw the routes
          function drawRoutes(routeNum) {
              var mydata = routeData(routeNum);
              for (var i = 0; i < mydata.length - 1; i++) {
-                 var rstparams = projectToLatLong(mydata[i].Longtitude, mydata[i].Latitude, mydata[i + 1].Longtitude, mydata[i + 1].Latitude);
-                 drawPolyline(rstparams);
+                 var rstparams = projectToLatLong(mydata[i].Longtitude, mydata[i].Latitude, mydata[i + 1].Longtitude, mydata[i + 1].Latitude)
+                 drawPolyline(rstparams, routeNum);
              }
          }
 
-         $("#27").click(drawRoutes(26));
+        //code for check box
+        /*$('input[type=checkbox]').each(function() {
+            $(this).change(function() {
+            if($(this).is(":checked")) {
+                drawRoutes($(this).val());
+            }else{
+                map.graphics.clear();
+            }
+            });
+        });*/
+
+        $( 'button[type=button]' ).each(function() {
+            $(this).click(function() {
+                if($(this).val()=='clearRoute'){
+                    map.graphics.clear();
+                }else{
+                    drawRoutes($(this).val());
+                }
+            });
+        });
+
 
 
     });
