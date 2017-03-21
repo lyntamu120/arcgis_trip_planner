@@ -41,7 +41,7 @@ $(document).ready(function(){
 
         function routeData(rouNum) {
             var json = null;
-            var routeURL = "http://transport.tamu.edu:80/BusRoutesFeed/api/route/" + rouNum + "/pattern";
+            var routeURL = "http://thehub2.tamu.edu:80/BusRoutesFeed/api/route/" + rouNum + "/pattern";
             $.ajax({
                 beforeSend: function(req) {
                     req.setRequestHeader("Accept", "application/json");
