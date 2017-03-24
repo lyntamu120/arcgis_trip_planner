@@ -4,17 +4,22 @@ $(document).ready(function(){
         "esri/map", "esri/graphic", "esri/symbols/SimpleMarkerSymbol","esri/symbols/SimpleLineSymbol", "esri/Color",
         "esri/tasks/GeometryService", "esri/tasks/ProjectParameters","esri/symbols/CartographicLineSymbol",
         "esri/SpatialReference", "esri/InfoTemplate", "dojo/dom", "dojo/on","esri/geometry/Polyline",
+        "esri/layers/ArcGISDynamicMapServiceLayer",
+        "esri/layers/ArcGISTiledMapServiceLayer",
+        "dojo/parser",
         "dojo/domReady!"
     ], function(
         Map, Graphic, SimpleMarkerSymbol, SimpleLineSymbol, Color,
         GeometryService, ProjectParameters,CartographicLineSymbol,
-        SpatialReference, InfoTemplate, dom, on, Polyline
+        SpatialReference, InfoTemplate, dom, on, Polyline, ArcGISDynamicMapServiceLayer,
+        ArcGISTiledMapServiceLayer,parser
     ) {
-        map = new Map("map", {
-            basemap: "streets",
-            center: [-96.3364829, 30.6187199],
-            zoom: 15
-        });
+
+        parser.parse();
+        map = new Map("map");
+        var layer;
+        layer = new ArcGISTiledMapServiceLayer("http://gis.tamu.edu/arcgis/rest/services/TS/TSbasemap021417/MapServer");
+        map.addLayer(layer);
 
 
         var color = [];
@@ -39,100 +44,51 @@ $(document).ready(function(){
         color['N_W04'] = [255, 0, 0];
 
 
-        function routeData(rouNum) {
-            var json = null;
-            var routeURL = "http://thehub2.tamu.edu:80/BusRoutesFeed/api/route/" + rouNum + "/pattern";
+
+
+
+        function addGraphics(routeNum) {
+            var routeURL = "http://thehub2.tamu.edu:80/BusRoutesFeed/api/route/" + routeNum + "/pattern";
             $.ajax({
                 beforeSend: function(req) {
                     req.setRequestHeader("Accept", "application/json");
-                    // req.setRequestHeader("Access-Control-Allow-Origin", "*");
-                    // req.setRequestHeader("Access-Control-Allow-Methods", "GET, PUT, POST, DELETE");
-                    // req.setRequestHeader("Access-Control-Allow-Headers", "Content-Type");
                 },
                 async: false,
                 global: false,
-                //url: "/pattern_27",
                 url: routeURL,
                 dataType: "json",
                 success: function (data) {
-                    json = data;
+                    var route27 = data;
+                    var symbol = new CartographicLineSymbol(
+                        CartographicLineSymbol.STYLE_SOLID,
+                        new Color(color[routeNum]), 5,
+                        CartographicLineSymbol.CAP_ROUND,
+                        CartographicLineSymbol.JOIN_MITER, 2
+                    );
+                    for (var i = 0; i < route27.length - 1; i++) {
+                        var polyline = new Polyline({
+                            "paths":[
+                                [
+                                    [route27[i].Longtitude, route27[i].Latitude],
+                                    [route27[i + 1].Longtitude, route27[i + 1].Latitude]
+                                ]
+                            ],"spatialReference":{
+                                "wkid":32139
+                            }
+                        });
+                        var graphic = new esri.Graphic(polyline, symbol);
+                        map.graphics.add(graphic);
+                    }
                 }
             });
-            return json;
         }
 
-
-
-        gsvc = new GeometryService("http://tasks.arcgisonline.com/ArcGIS/rest/services/Geometry/GeometryServer");
-
-        //, "on(mapload", projectToLatLong);
-        on(map,"load", drawRoutes);
-
-        function projectToLatLong(Longtitude1, Latitude1, Longtitude2, Latitude2) {
-            // map.graphics.clear();
-
-            m_mapPoint = [];  //point array
-
-            m_mapPoint[0] = new esri.geometry.Point(Longtitude1, Latitude1, new esri.SpatialReference({ wkid: 32139 }));
-            m_mapPoint[1] = new esri.geometry.Point(Longtitude2, Latitude2, new esri.SpatialReference({ wkid: 32139 }));
-
-            var outSR = new SpatialReference(4326);
-
-            var params = new esri.tasks.ProjectParameters();
-            // add array of points
-            params.geometries = m_mapPoint;
-            // Output Spatial Reference in lat/long (wkid 3857 )
-            params.outSR = outSR;
-
-            //gsvc.project(params, callback);
-            return params;
-        }
-
-
-        function drawPolyline(params, routeNum) {
-            gsvc.project(params, function callback(m_mapPoint) {
-                var symbol = new CartographicLineSymbol(
-                    CartographicLineSymbol.STYLE_SOLID,
-                    new Color(color[routeNum]), 5,
-                    CartographicLineSymbol.CAP_ROUND,
-                    CartographicLineSymbol.JOIN_MITER, 2
-                );
-                var path = new esri.geometry.Polyline();
-                path.addPath([m_mapPoint[0], m_mapPoint[1]]);
-                //path.addPath([m_mapPoint[0], m_mapPoint[1],m_mapPoint[2], m_mapPoint[3], m_mapPoint[4]]);
-                var graphic = new esri.Graphic(path, symbol);
-                //draw the line on the map
-                map.graphics.add(graphic);
-            });
-        }
-
-
-        //draw the routes
-         function drawRoutes(routeNum) {
-             var mydata = routeData(routeNum);
-             for (var i = 0; i < mydata.length - 1; i++) {
-                 var rstparams = projectToLatLong(mydata[i].Longtitude, mydata[i].Latitude, mydata[i + 1].Longtitude, mydata[i + 1].Latitude)
-                 drawPolyline(rstparams, routeNum);
-             }
-         }
-
-        //code for check box
-        /*$('input[type=checkbox]').each(function() {
-            $(this).change(function() {
-            if($(this).is(":checked")) {
-                drawRoutes($(this).val());
-            }else{
-                map.graphics.clear();
-            }
-            });
-        });*/
-
-        $( 'button[type=button]' ).each(function() {
+        $( 'button[type=button]').each(function() {
             $(this).click(function() {
                 if($(this).val()=='clearRoute'){
                     map.graphics.clear();
                 }else{
-                    drawRoutes($(this).val());
+                    map.on("load", addGraphics($(this).val()));
                 }
             });
         });
@@ -140,7 +96,5 @@ $(document).ready(function(){
 
 
     });
-
-
 
 });
