@@ -6,22 +6,35 @@ $(document).ready(function(){
         "esri/SpatialReference", "esri/InfoTemplate", "dojo/dom", "dojo/on","esri/geometry/Polyline",
         "esri/layers/ArcGISDynamicMapServiceLayer",
         "esri/layers/ArcGISTiledMapServiceLayer",
+        "esri/dijit/LocateButton",
+        "esri/dijit//HomeButton",
         "dojo/parser",
         "dojo/domReady!"
     ], function(
         Map, Graphic, SimpleMarkerSymbol, SimpleLineSymbol, Color,
         GeometryService, ProjectParameters,CartographicLineSymbol,
         SpatialReference, InfoTemplate, dom, on, Polyline, ArcGISDynamicMapServiceLayer,
-        ArcGISTiledMapServiceLayer,parser
+        ArcGISTiledMapServiceLayer,parser,LocateButton
     ) {
 
         parser.parse();
+        
         map = new Map("map");
         var layer;
         layer = new ArcGISTiledMapServiceLayer("http://gis.tamu.edu/arcgis/rest/services/TS/TSbasemap021417/MapServer");
         map.addLayer(layer);
+        
+        var geolocate = new LocateButton({
+            map: map
+        }, "LocateButton");
 
-
+        geolocate.startup();
+        
+         /* var h = new HomeButton({
+            map: map
+        }, "HomeButton");
+        h.startup();
+        */
         var color = [];
         color['01'] = [98, 64, 153];
         color['02'] = [234, 116, 36];
