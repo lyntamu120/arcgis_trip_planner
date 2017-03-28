@@ -21,7 +21,6 @@ $(document).ready(function(){
         layer = new ArcGISTiledMapServiceLayer("http://gis.tamu.edu/arcgis/rest/services/TS/TSbasemap021417/MapServer");
         map.addLayer(layer);
 
-
         var color = [];
         color['01'] = [98, 64, 153];
         color['02'] = [234, 116, 36];
@@ -53,8 +52,8 @@ $(document).ready(function(){
                 beforeSend: function(req) {
                     req.setRequestHeader("Accept", "application/json");
                 },
-                async: false,
-                global: false,
+                // async: false,
+                // global: false,
                 url: routeURL,
                 dataType: "json",
                 success: function (data) {
