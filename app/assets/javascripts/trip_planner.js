@@ -71,8 +71,6 @@ $(document).ready(function(){
                         var graphic = new esri.Graphic(pt, pictureMarkerSymbol);
                         map.graphics.add(graphic);
 
-                                 
-
                     }
                 }
             });
