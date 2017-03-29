@@ -48,13 +48,12 @@ $(document).ready(function(){
                 beforeSend: function(req) {
                     req.setRequestHeader("Accept", "application/json");
                 },
-                async: false,
+                async: true,
                 global: false,
                 url: busURL,
                 dataType: "json",
                 success: function (data) {
                     console.log(data.length);
-
                     var buses = data;
                     var pictureMarkerSymbol = new PictureMarkerSymbol('http://icons.iconarchive.com/icons/fasticon/happy-bus/48/bus-green-icon.png', 45, 45);
                     // var webStyleSymbol = new WebStyleSymbol({
@@ -68,11 +67,14 @@ $(document).ready(function(){
                     for (var i = 0; i < buses.length; i++) {
                         console.log(buses[i].GPS.Lat);
                         console.log(buses[i].GPS.Long);
+                        // console.log(buses[i].NextStops);
 
                         var pointSymbol = new esri.symbol.SimpleMarkerSymbol(); // point
                         // pointSymbol.setColor([255,0,0]); 
                         var pt = new esri.geometry.Point(buses[i].GPS.Long, buses[i].GPS.Lat, map.spatialReference);
-                        var graphic = new esri.Graphic(pt, pictureMarkerSymbol);
+                        var attr = {"Seats left ": buses[i].APC.PassengerCapacity - buses[i].APC.TotalPassenger};//, "Next stops departure time": buses[i].NextStops.ScheduledDepartTime};
+                        var infoTemplate = new InfoTemplate(routeNum);
+                        var graphic = new esri.Graphic(pt, pictureMarkerSymbol, attr, infoTemplate);
                         map.graphics.add(graphic);
 
                     }
@@ -153,7 +155,7 @@ $(document).ready(function(){
 
             // construct the new graphic
             var infoTemplate = new InfoTemplate(text);
-            var attr = {"The next stop is " : nextStopName};
+            var attr = {"Next stop" : nextStopName};
             var graphic = new esri.Graphic(pt, pointSymbol,attr,infoTemplate);
             // map.graphics.on("click", function(e){
             //   //get the associated node info when the graphic is clicked
