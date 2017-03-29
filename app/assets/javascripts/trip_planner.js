@@ -1,7 +1,7 @@
 $(document).ready(function(){
-    var map, gsvc;
+        var map, gsvc;
     require([
-        "esri/map", "esri/graphic", "esri/symbols/SimpleMarkerSymbol","esri/symbols/SimpleLineSymbol", "esri/Color",
+        "esri/symbols/PictureMarkerSymbol","esri/map", "esri/graphic", "esri/symbols/SimpleMarkerSymbol","esri/symbols/SimpleLineSymbol","esri/Color",
         "esri/tasks/GeometryService", "esri/tasks/ProjectParameters","esri/symbols/CartographicLineSymbol",
         "esri/SpatialReference", "esri/InfoTemplate", "dojo/dom", "dojo/on","esri/geometry/Polyline",
         "esri/layers/ArcGISDynamicMapServiceLayer",
@@ -9,7 +9,7 @@ $(document).ready(function(){
         "dojo/parser",
         "dojo/domReady!"
     ], function(
-        Map, Graphic, SimpleMarkerSymbol, SimpleLineSymbol, Color,
+        PictureMarkerSymbol,Map, Graphic, SimpleMarkerSymbol, SimpleLineSymbol, Color,
         GeometryService, ProjectParameters,CartographicLineSymbol,
         SpatialReference, InfoTemplate, dom, on, Polyline, ArcGISDynamicMapServiceLayer,
         ArcGISTiledMapServiceLayer,parser
@@ -42,10 +42,43 @@ $(document).ready(function(){
         color['40'] = [255, 255, 0 ];
         color['N_W04'] = [255, 0, 0];
 
+        function addCurrentBuses(routeNum) {
+            var busURL = "http://thehub2.tamu.edu:80/BusRoutesFeed/api/route/" + routeNum + "/buses/mentor";
+            $.ajax({
+                beforeSend: function(req) {
+                    req.setRequestHeader("Accept", "application/json");
+                },
+                async: false,
+                global: false,
+                url: busURL,
+                dataType: "json",
+                success: function (data) {
+                    var buses = data;
+                    var pictureMarkerSymbol = new PictureMarkerSymbol('http://icons.iconarchive.com/icons/fasticon/happy-bus/48/bus-green-icon.png', 45, 45);
+                    // var webStyleSymbol = new WebStyleSymbol({
+                    //       name: "Bus",
+                    //       portal: {
+                    //         url: "https://www.arcgis.com"
+                    //       },
+                    //       styleName: "EsriIconsStyle"
+                    // });
+                    pictureMarkerSymbol.setColor(color[routeNum]);
+                    for (var i = 0; i < buses.length - 1; i++) {
+                        console.log(buses[i].GPS.Lat);
+                        console.log(buses[i].GPS.Long);
 
+                        var pointSymbol = new esri.symbol.SimpleMarkerSymbol(); // point
+                        // pointSymbol.setColor([255,0,0]); 
+                        var pt = new esri.geometry.Point(buses[i].GPS.Long, buses[i].GPS.Lat, map.spatialReference);
+                        var graphic = new esri.Graphic(pt, pictureMarkerSymbol);
+                        map.graphics.add(graphic);
 
+                                 
 
-
+                    }
+                }
+            });
+        }
         function addGraphics(routeNum) {
             var routeURL = "http://thehub2.tamu.edu:80/BusRoutesFeed/api/route/" + routeNum + "/pattern";
             $.ajax({
@@ -81,6 +114,59 @@ $(document).ready(function(){
                 }
             });
         }
+        
+        function addStops(routeNum) {
+            var stopsURL = "http://thehub2.tamu.edu:80/BusRoutesFeed/api/route/" + routeNum + "/stops";
+            $.ajax({
+                beforeSend: function(req) {
+                    req.setRequestHeader("Accept", "application/json");
+                },
+                async: false,
+                global: false,
+                url: stopsURL,
+                dataType: "json",
+                success: function (data) {
+                    var stops = data;
+                    for (var i = 0; i < stops.length - 1; i++) {
+                        addPointsAndText(stops[i].Longtitude, stops[i].Latitude, stops[i].Name, routeNum, stops[i + 1].Name);
+                    }
+                }
+            });
+        }
+        function addPointsAndText(x, y, text, routeNum, nextStopName) {
+            // create the points symbol
+            var pointSymbol = new esri.symbol.SimpleMarkerSymbol(); // point
+            pointSymbol.setColor(color[routeNum]);
+
+            // create the TextSymbol and the corresponding text
+            var font = new esri.symbol.Font();
+            font.setSize(10);
+            font.setWeight(esri.symbol.Font.WEIGHT_BOLD);
+            var textSymbol = new esri.symbol.TextSymbol();
+            textSymbol.setText(text);
+            textSymbol.setColor(color[routeNum]);
+            textSymbol.setFont(font);
+            textSymbol.setKerning(true);
+
+            // set points in the map
+            var pt = new esri.geometry.Point(x, y, map.spatialReference);
+
+            // construct the new graphic
+            var infoTemplate = new InfoTemplate(text);
+            var attr = {"The next stop is " : nextStopName};
+            var graphic = new esri.Graphic(pt, pointSymbol,attr,infoTemplate);
+            // map.graphics.on("click", function(e){
+            //   //get the associated node info when the graphic is clicked
+            //     var node = e.graphic.getNode();
+            //     console.log(node);
+            // });
+            // dojo.connect(map.graphics,"onClick",identifyFeatures);
+            map.graphics.add(graphic);
+        }
+
+        // function identifyFeatures(evt){
+        //     var extentGeom = pointToExtent(map,evt.mapPoint,10);
+        // }
 
         $( 'button[type=button]').each(function() {
             $(this).click(function() {
@@ -88,6 +174,8 @@ $(document).ready(function(){
                     map.graphics.clear();
                 }else{
                     map.on("load", addGraphics($(this).val()));
+                    map.on("load", addStops($(this).val()));
+                    map.on("load", addCurrentBuses($(this).val()));
                 }
             });
         });
