@@ -48,8 +48,6 @@ $(document).ready(function(){
                 beforeSend: function(req) {
                     req.setRequestHeader("Accept", "application/json");
                 },
-                async: false,
-                global: false,
                 url: busURL,
                 dataType: "json",
                 success: function (data) {
@@ -79,7 +77,9 @@ $(document).ready(function(){
                 }
             });
         }
+
         function addGraphics(routeNum) {
+
             var routeURL = "http://thehub2.tamu.edu:80/BusRoutesFeed/api/route/" + routeNum + "/pattern";
             $.ajax({
                 beforeSend: function(req) {
@@ -121,8 +121,6 @@ $(document).ready(function(){
                 beforeSend: function(req) {
                     req.setRequestHeader("Accept", "application/json");
                 },
-                async: false,
-                global: false,
                 url: stopsURL,
                 dataType: "json",
                 success: function (data) {
