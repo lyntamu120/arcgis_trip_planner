@@ -25,13 +25,13 @@
 }
 
 /* Map div style*/
-#map {
+/*#map {
     position: absolute;
     top: 50px;
     right: 0;
     bottom: 0;
     left: 0;
-}
+}*/
 .pac-container {
     z-index: 1051 !important;
 }
