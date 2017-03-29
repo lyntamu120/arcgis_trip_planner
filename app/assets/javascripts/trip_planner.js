@@ -54,6 +54,8 @@ $(document).ready(function(){
                 url: busURL,
                 dataType: "json",
                 success: function (data) {
+                    console.log(data.length);
+
                     var buses = data;
                     var pictureMarkerSymbol = new PictureMarkerSymbol('http://icons.iconarchive.com/icons/fasticon/happy-bus/48/bus-green-icon.png', 45, 45);
                     // var webStyleSymbol = new WebStyleSymbol({
@@ -64,7 +66,7 @@ $(document).ready(function(){
                     //       styleName: "EsriIconsStyle"
                     // });
                     pictureMarkerSymbol.setColor(color[routeNum]);
-                    for (var i = 0; i < buses.length - 1; i++) {
+                    for (var i = 0; i < buses.length; i++) {
                         console.log(buses[i].GPS.Lat);
                         console.log(buses[i].GPS.Long);
 
