@@ -21,7 +21,6 @@ $(document).ready(function(){
         layer = new ArcGISTiledMapServiceLayer("http://gis.tamu.edu/arcgis/rest/services/TS/TSbasemap021417/MapServer");
         map.addLayer(layer);
 
-
         var color = [];
         color['01'] = [98, 64, 153];
         color['02'] = [234, 116, 36];
@@ -54,6 +53,8 @@ $(document).ready(function(){
                 url: busURL,
                 dataType: "json",
                 success: function (data) {
+                    console.log(data.length);
+
                     var buses = data;
                     var pictureMarkerSymbol = new PictureMarkerSymbol('http://icons.iconarchive.com/icons/fasticon/happy-bus/48/bus-green-icon.png', 45, 45);
                     // var webStyleSymbol = new WebStyleSymbol({
@@ -64,7 +65,7 @@ $(document).ready(function(){
                     //       styleName: "EsriIconsStyle"
                     // });
                     pictureMarkerSymbol.setColor(color[routeNum]);
-                    for (var i = 0; i < buses.length - 1; i++) {
+                    for (var i = 0; i < buses.length; i++) {
                         console.log(buses[i].GPS.Lat);
                         console.log(buses[i].GPS.Long);
 
@@ -74,20 +75,19 @@ $(document).ready(function(){
                         var graphic = new esri.Graphic(pt, pictureMarkerSymbol);
                         map.graphics.add(graphic);
 
-                                 
-
                     }
                 }
             });
         }
         function addGraphics(routeNum) {
+
             var routeURL = "http://thehub2.tamu.edu:80/BusRoutesFeed/api/route/" + routeNum + "/pattern";
             $.ajax({
                 beforeSend: function(req) {
                     req.setRequestHeader("Accept", "application/json");
                 },
-                async: false,
-                global: false,
+                // async: false,
+                // global: false,
                 url: routeURL,
                 dataType: "json",
                 success: function (data) {
@@ -122,8 +122,7 @@ $(document).ready(function(){
                 beforeSend: function(req) {
                     req.setRequestHeader("Accept", "application/json");
                 },
-                async: false,
-                global: false,
+
                 url: stopsURL,
                 dataType: "json",
                 success: function (data) {
@@ -180,8 +179,6 @@ $(document).ready(function(){
                 }
             });
         });
-
-
 
     });
 
