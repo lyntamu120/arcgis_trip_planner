@@ -4,4 +4,7 @@ class TripPlannerController < ApplicationController
 
   def direction
   end
+
+  def closest_route
+  end
 end
