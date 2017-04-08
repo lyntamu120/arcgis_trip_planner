@@ -42,45 +42,6 @@ $(document).ready(function(){
         color['40'] = [255, 255, 0 ];
         color['N_W04'] = [255, 0, 0];
 
-        function addCurrentBuses(routeNum) {
-            var busURL = "http://thehub2.tamu.edu:80/BusRoutesFeed/api/route/" + routeNum + "/buses/mentor";
-            $.ajax({
-                beforeSend: function(req) {
-                    req.setRequestHeader("Accept", "application/json");
-                },
-                async: true,
-                global: false,
-                url: busURL,
-                dataType: "json",
-                success: function (data) {
-                    console.log(data.length);
-                    var buses = data;
-                    var pictureMarkerSymbol = new PictureMarkerSymbol('http://icons.iconarchive.com/icons/fasticon/happy-bus/48/bus-green-icon.png', 45, 45);
-                    // var webStyleSymbol = new WebStyleSymbol({
-                    //       name: "Bus",
-                    //       portal: {
-                    //         url: "https://www.arcgis.com"
-                    //       },
-                    //       styleName: "EsriIconsStyle"
-                    // });
-                    pictureMarkerSymbol.setColor(color[routeNum]);
-                    for (var i = 0; i < buses.length; i++) {
-                        console.log(buses[i].GPS.Lat);
-                        console.log(buses[i].GPS.Long);
-                        // console.log(buses[i].NextStops);
-
-                        var pointSymbol = new esri.symbol.SimpleMarkerSymbol(); // point
-                        // pointSymbol.setColor([255,0,0]); 
-                        var pt = new esri.geometry.Point(buses[i].GPS.Long, buses[i].GPS.Lat, map.spatialReference);
-                        var attr = {"Seats left ": buses[i].APC.PassengerCapacity - buses[i].APC.TotalPassenger};//, "Next stops departure time": buses[i].NextStops.ScheduledDepartTime};
-                        var infoTemplate = new InfoTemplate(routeNum);
-                        var graphic = new esri.Graphic(pt, pictureMarkerSymbol, attr, infoTemplate);
-                        map.graphics.add(graphic);
-
-                    }
-                }
-            });
-        }
         function addGraphics(routeNum) {
 
             var routeURL = "http://thehub2.tamu.edu:80/BusRoutesFeed/api/route/" + routeNum + "/pattern";
@@ -117,6 +78,47 @@ $(document).ready(function(){
                 }
             });
         }
+
+        function addCurrentBuses(routeNum) {
+            var busURL = "http://thehub2.tamu.edu:80/BusRoutesFeed/api/route/" + routeNum + "/buses/mentor";
+            $.ajax({
+                beforeSend: function(req) {
+                    req.setRequestHeader("Accept", "application/json");
+                },
+                async: true,
+                global: false,
+                url: busURL,
+                dataType: "json",
+                success: function (data) {
+                    console.log(data.length);
+                    var buses = data;
+                    var pictureMarkerSymbol = new PictureMarkerSymbol('http://icons.iconarchive.com/icons/fasticon/happy-bus/48/bus-green-icon.png', 35, 35);
+                    // var webStyleSymbol = new WebStyleSymbol({
+                    //       name: "Bus",
+                    //       portal: {
+                    //         url: "https://www.arcgis.com"
+                    //       },
+                    //       styleName: "EsriIconsStyle"
+                    // });
+                    pictureMarkerSymbol.setColor(color[routeNum]);
+                    for (var i = 0; i < buses.length; i++) {
+                        console.log(buses[i].GPS.Lat);
+                        console.log(buses[i].GPS.Long);
+                        // console.log(buses[i].NextStops);
+
+                        var pointSymbol = new esri.symbol.SimpleMarkerSymbol(); // point
+                        // pointSymbol.setColor([255,0,0]); 
+                        var pt = new esri.geometry.Point(buses[i].GPS.Long, buses[i].GPS.Lat, map.spatialReference);
+                        var attr = {"Seats left ": buses[i].APC.PassengerCapacity - buses[i].APC.TotalPassenger};//, "Next stops departure time": buses[i].NextStops.ScheduledDepartTime};
+                        var infoTemplate = new InfoTemplate("Route " + routeNum);
+                        var busGraphic = new esri.Graphic(pt, pictureMarkerSymbol, attr, infoTemplate);
+                        map.graphics.add(busGraphic);
+
+                    }
+                }
+            });
+        }
+        
         
         function addStops(routeNum) {
             var stopsURL = "http://thehub2.tamu.edu:80/BusRoutesFeed/api/route/" + routeNum + "/stops";
@@ -139,7 +141,10 @@ $(document).ready(function(){
             // create the points symbol
             var pointSymbol = new esri.symbol.SimpleMarkerSymbol(); // point
             pointSymbol.setColor(color[routeNum]);
-
+            pointSymbol.setStyle(esri.symbol.SimpleMarkerSymbol.STYLE_SQUARE);
+            pointSymbol.setSize(13);
+            pointSymbol.setOutline(null);
+            // pointSymbol.UserSymbolLevels = true;
             // create the TextSymbol and the corresponding text
             var font = new esri.symbol.Font();
             font.setSize(10);
@@ -156,15 +161,17 @@ $(document).ready(function(){
             // construct the new graphic
             var infoTemplate = new InfoTemplate(text);
             var attr = {"Next stop" : nextStopName};
-            var graphic = new esri.Graphic(pt, pointSymbol,attr,infoTemplate);
+            var pointGraphic = new esri.Graphic(pt, pointSymbol,attr,infoTemplate);
             // map.graphics.on("click", function(e){
             //   //get the associated node info when the graphic is clicked
             //     var node = e.graphic.getNode();
             //     console.log(node);
             // });
             // dojo.connect(map.graphics,"onClick",identifyFeatures);
-            map.graphics.add(graphic);
+            map.graphics.add(pointGraphic);
         }
+
+        
 
         // function identifyFeatures(evt){
         //     var extentGeom = pointToExtent(map,evt.mapPoint,10);
@@ -178,6 +185,7 @@ $(document).ready(function(){
                     map.on("load", addGraphics($(this).val()));
                     map.on("load", addStops($(this).val()));
                     map.on("load", addCurrentBuses($(this).val()));
+    
                 }
             });
         });
