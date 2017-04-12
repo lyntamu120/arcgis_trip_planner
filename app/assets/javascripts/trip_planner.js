@@ -163,7 +163,6 @@ $(document).ready(function(){
             // dojo.connect(map.graphics,"onClick",identifyFeatures);
             map.graphics.add(graphic);
         }
-
         // function identifyFeatures(evt){
         //     var extentGeom = pointToExtent(map,evt.mapPoint,10);
         // }
@@ -173,9 +172,9 @@ $(document).ready(function(){
                 if($(this).val()=='clearRoute'){
                     map.graphics.clear();
                 }else{
-                    map.on("load", addGraphics($(this).val()));
-                    map.on("load", addStops($(this).val()));
-                    map.on("load", addCurrentBuses($(this).val()));
+                    addGraphics($(this).val());
+                    addStops($(this).val());
+                    addCurrentBuses($(this).val());
                 }
             });
         });
