@@ -1,29 +1,22 @@
 <!DOCTYPE html>
 <html>
-<head>
-  <title>TamuTripPlanner</title>
-  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-  <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no">
-  <!--<style type="text/css">-->
-    /*@import "http://js.arcgis.com/3.15/dijit/themes/tundra/tundra.css";*/
-    /*@import "http://js.arcgis.com/3.15/esri/css/esri.css";*/
-    /*@import "http://gis.tamu.edu/arcgis/rest/static/jsapi.css";*/
-  <!--</style>-->
-  <!--<script type="text/javascript" src="http://js.arcgis.com/3.15/init.js"></script>-->
-  <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
-  <link rel="stylesheet" href="https://js.arcgis.com/3.20/esri/css/esri.css">
-  <style>
-    html, body, #map {
-      height: 100%;
-      padding: 0;
-      margin: 0;
-    }
-  </style>
-  <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %>
-  <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
-</head>
+    <head>
+      <title>TamuTripPlanner</title>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+      <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no">
+      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" >
+      <link rel="stylesheet" href="https://js.arcgis.com/3.20/esri/css/esri.css">
+      <script
+      src="https://code.jquery.com/jquery-3.2.1.js"
+      integrity="sha256-DZAnKJ/6XZ9si04Hgrsxu/8s717jcIzLy3oi35EouyE="
+      crossorigin="anonymous">
+      </script>
+      <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+      <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %>
+      <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
+    </head>
 
-<body>
-<%= yield %>
-</body>
+    <body>
+      <%= yield %>
+    </body>
 </html>

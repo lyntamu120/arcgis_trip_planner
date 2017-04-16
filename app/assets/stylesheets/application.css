@@ -25,13 +25,13 @@
 }
 
 /* Map div style*/
-/*#map {
+#map {
     position: absolute;
     top: 50px;
     right: 0;
     bottom: 0;
     left: 0;
-}*/
+}
 .pac-container {
     z-index: 1051 !important;
 }
@@ -46,6 +46,7 @@
     margin: 0px;
     padding: 0px;
 }
+
 
 .navbar
 {
@@ -124,4 +125,45 @@
 .style_image {
     margin-right: 15px;
     display: block;
+}
+
+body,html,#map{margin:0;padding:0;height:100%;width:100%;}
+.panel {
+    border-radius: 6px;
+    box-shadow: 0px 6px 3px -3px #888;
+    border: 2px solid #86942A;
+    margin: 5px;
+}
+#search1 {
+    padding-left:10px;
+    padding-right:5px;
+}
+#search2 {
+    padding-left:10px;
+    padding-right:5px;
+}
+/*change the default css*/
+.arcgisSearch .searchBtn {
+    display:none;
+}
+.arcgisSearch .searchGroup .searchInput {
+    border-right: 1px solid #57585A;
+}
+.Center {
+    height:30px;
+    width:70px;
+    position: relative;
+    left:40%;
+}
+#TimeTable {
+    background-color: lightblue;
+}
+.hidden {
+    display: none;
+}
+#TimeTableGrid {
+    font-family: arial, sans-serif;
+}
+h4{
+    text-align: center;
 }
