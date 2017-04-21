@@ -55,11 +55,11 @@ $(document).ready(function(){
     ) {
         var incidentsGraphicsLayer, routeGraphicLayer, closestFacilityTask;
         esriConfig.defaults.io.corsDetection = false;
-        urlUtils.addProxyRule({
-          urlPrefix: "route.arcgis.com",
-          //proxyUrl: "http://utility.arcgis.com/usrsvcs/appservices/CY6AgGvTN8MqThaM/rest/services/World/Route/NAServer/Route_World"
-          proxyUrl: "http://utility.arcgis.com/usrsvcs/appservices/98jbwwI2IH27ambo/rest/services/World/ClosestFacility/GPServer/FindClosestFacilities"
-        });
+        // urlUtils.addProxyRule({
+        //   urlPrefix: "route.arcgis.com",
+        //   //proxyUrl: "http://utility.arcgis.com/usrsvcs/appservices/CY6AgGvTN8MqThaM/rest/services/World/Route/NAServer/Route_World"
+        //   proxyUrl: "http://utility.arcgis.com/usrsvcs/appservices/98jbwwI2IH27ambo/rest/services/World/ClosestFacility/GPServer/FindClosestFacilities"
+        // });
 
 
         //add the map
@@ -188,8 +188,8 @@ $(document).ready(function(){
             params2.outSpatialReference = map.spatialReference;
         });
 
-        closestFacilityTask = new ClosestFacilityTask("https://route.arcgis.com/arcgis/rest/services/World/ClosestFacility/NAServer/ClosestFacility_World");
-
+        //closestFacilityTask = new ClosestFacilityTask("https://route.arcgis.com/arcgis/rest/services/World/ClosestFacility/NAServer/ClosestFacility_World");
+        closestFacilityTask = new ClosestFacilityTask("http://utility.arcgis.com/usrsvcs/appservices/98jbwwI2IH27ambo/rest/services/World/ClosestFacility/GPServer/FindClosestFacilities");
 
         params1.defaultTargetFacilityCount = 10;
         params2.defaultTargetFacilityCount = 10;
