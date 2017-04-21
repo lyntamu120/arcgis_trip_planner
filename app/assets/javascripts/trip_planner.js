@@ -55,11 +55,11 @@ $(document).ready(function(){
     ) {
         var incidentsGraphicsLayer, routeGraphicLayer, closestFacilityTask;
         esriConfig.defaults.io.corsDetection = false;
-        // urlUtils.addProxyRule({
-        //   urlPrefix: "route.arcgis.com",
-        //   //proxyUrl: "http://utility.arcgis.com/usrsvcs/appservices/CY6AgGvTN8MqThaM/rest/services/World/Route/NAServer/Route_World"
-        //   proxyUrl: "http://utility.arcgis.com/usrsvcs/appservices/98jbwwI2IH27ambo/rest/services/World/ClosestFacility/GPServer/FindClosestFacilities"
-        // });
+        urlUtils.addProxyRule({
+          urlPrefix: "route.arcgis.com",
+          //proxyUrl: "http://utility.arcgis.com/usrsvcs/appservices/CY6AgGvTN8MqThaM/rest/services/World/Route/NAServer/Route_World"
+          proxyUrl: "http://utility.arcgis.com/usrsvcs/appservices/98jbwwI2IH27ambo/rest/services/World/ClosestFacility/GPServer/FindClosestFacilities"
+        });
 
 
         //add the map
