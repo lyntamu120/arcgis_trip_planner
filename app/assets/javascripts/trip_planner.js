@@ -55,10 +55,10 @@ $(document).ready(function(){
     ) {
         var incidentsGraphicsLayer, routeGraphicLayer, closestFacilityTask;
         esriConfig.defaults.io.corsDetection = false;
-        // urlUtils.addProxyRule({
-        //   urlPrefix: "route.arcgis.com",
-        //   proxyUrl: "http://localhost/~good/PHP/proxy.php"
-        // });
+        urlUtils.addProxyRule({
+          urlPrefix: "route.arcgis.com",
+          proxyUrl: "http://utility.arcgis.com/usrsvcs/appservices/CY6AgGvTN8MqThaM/rest/services/World/Route/NAServer/Route_World"
+        });
 
 
         //add the map
