@@ -59,7 +59,8 @@ $(document).ready(function(){
         //   proxyUrl: "http://utility.arcgis.com/usrsvcs/appservices/CY6AgGvTN8MqThaM/rest/services/World/Route/NAServer/Route_World"
         //   //proxyUrl: "http://utility.arcgis.com/usrsvcs/appservices/98jbwwI2IH27ambo/rest/services/World/ClosestFacility/GPServer/FindClosestFacilities"
         // });
-        esriConfig.defaults.io.corsEnabledServers.push("utility.arcgis.com");
+        esriConfig.defaults.io.corsEnabledServers.push("http://utility.arcgis.com/usrsvcs/appservices/CY6AgGvTN8MqThaM/rest/services/World/Route/NAServer/Route_World");
+        esriConfig.defaults.io.corsEnabledServers.push("http://utility.arcgis.com/usrsvcs/appservices/98jbwwI2IH27ambo/rest/services/World/ClosestFacility/GPServer/FindClosestFacilities");
 
 
         //add the map
