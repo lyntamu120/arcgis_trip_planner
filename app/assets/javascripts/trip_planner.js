@@ -54,14 +54,12 @@ $(document).ready(function(){
 
     ) {
         var incidentsGraphicsLayer, routeGraphicLayer, closestFacilityTask;
-        esriConfig.defaults.io.corsDetection = false;
         // urlUtils.addProxyRule({
         //   urlPrefix: "route.arcgis.com",
-        //   //proxyUrl: "http://utility.arcgis.com/usrsvcs/appservices/CY6AgGvTN8MqThaM/rest/services/World/Route/NAServer/Route_World"
-        //   proxyUrl: "http://utility.arcgis.com/usrsvcs/appservices/98jbwwI2IH27ambo/rest/services/World/ClosestFacility/GPServer/FindClosestFacilities"
+        //   proxyUrl: "http://utility.arcgis.com/usrsvcs/appservices/CY6AgGvTN8MqThaM/rest/services/World/Route/NAServer/Route_World"
+        //   //proxyUrl: "http://utility.arcgis.com/usrsvcs/appservices/98jbwwI2IH27ambo/rest/services/World/ClosestFacility/GPServer/FindClosestFacilities"
         // });
-        esriConfig.defaults.io.proxyUrl = "http://utility.arcgis.com/usrsvcs/appservices/98jbwwI2IH27ambo/rest/services/World/ClosestFacility/GPServer/FindClosestFacilities"
-        esriConfig.defaults.io.alwaysUseProxy = false;
+        esriConfig.defaults.io.corsEnabledServers.push("utility.arcgis.com");
 
 
         //add the map
