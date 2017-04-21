@@ -105,6 +105,14 @@ function removeligten(btnnum) {
     $(id).removeClass('btn-success');
 }
 
+function removeAllLigten() {
+    for (var i = 1; i <= 9; i++) {
+        var btnnum = '0' + i;
+        removeligten(btnnum);
+    }
+    removeligten('N_W04');
+}
+
 function clearTimeTable() {
     $("#TimeTableGrid tr").remove();
     $("caption").remove();
