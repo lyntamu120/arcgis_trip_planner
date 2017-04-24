@@ -1,49 +1,71 @@
-$(document).ready(function(){
-    var allStops = obtainStop();
-    var map, params;
-    require([
-        "dojo/dom",
-        "dojo/dom-construct",
-        "dojo/query",
-        "dojo/_base/Color",
-        "dojo/_base/array",
-        //"esri/Color",
-        "dojo/parser",
-        "dijit/registry",
-        "esri/urlUtils",
-        "esri/map",
-        "esri/lang",
-        "esri/graphic",
-        "esri/InfoTemplate",
-        "esri/layers/GraphicsLayer",
-        "esri/renderers/SimpleRenderer",
-        "esri/geometry/Point",
-        "esri/tasks/FeatureSet",
+    $(document).ready(function () {
+        main();
+    });
 
-        "esri/tasks/ClosestFacilityTask",
-        "esri/tasks/ClosestFacilityParameters",
+    var main = function() {
+        require([
+            "dojo/dom",
+            "dojo/dom-construct",
+            "dojo/query",
+            "dojo/_base/Color",
+            "dojo/_base/array",
+            //"esri/Color",
+            "dojo/parser",
+            "dijit/registry",
+            "esri/urlUtils",
+            "esri/map",
+            "esri/lang",
+            "esri/graphic",
+            "esri/InfoTemplate",
+            "esri/layers/GraphicsLayer",
+            "esri/renderers/SimpleRenderer",
+            "esri/geometry/Point",
+            "esri/tasks/FeatureSet",
 
-        "esri/dijit/Search",
-        "esri/geometry/screenUtils",
-        "esri/layers/ArcGISTiledMapServiceLayer",
-        "esri/layers/FeatureLayer",
-        "esri/symbols/PictureMarkerSymbol",
-        "esri/symbols/SimpleMarkerSymbol",
-        "esri/symbols/SimpleLineSymbol",
-        "esri/symbols/CartographicLineSymbol",
-        "esri/geometry/Polyline",
-        "esri/layers/ArcGISDynamicMapServiceLayer",
-        "esri/layers/ArcGISTiledMapServiceLayer",
-        "esri/config",
+            "esri/tasks/ClosestFacilityTask",
+            "esri/tasks/ClosestFacilityParameters",
+
+            "esri/dijit/Search",
+            "esri/geometry/screenUtils",
+            "esri/layers/ArcGISTiledMapServiceLayer",
+            "esri/layers/FeatureLayer",
+            "esri/symbols/PictureMarkerSymbol",
+            "esri/symbols/SimpleMarkerSymbol",
+            "esri/symbols/SimpleLineSymbol",
+            "esri/symbols/CartographicLineSymbol",
+            "esri/geometry/Polyline",
+            "esri/layers/ArcGISDynamicMapServiceLayer",
+            "esri/layers/ArcGISTiledMapServiceLayer",
+            "esri/config",
 
 
-        "dijit/form/ComboBox",
-        "dijit/layout/BorderContainer",
-        "dijit/layout/ContentPane",
+            "dijit/form/ComboBox",
+            "dijit/layout/BorderContainer",
+            "dijit/layout/ContentPane",
 
-        "dojo/domReady!"
+            "dojo/domReady!"
 
-    ], function(
+        ],  function (dom, domConstruct, query, Color, array, parser, registry,
+                      urlUtils, Map, esriLang, Graphic, InfoTemplate, GraphicsLayer, SimpleRenderer,
+                      Point, FeatureSet,
+                      ClosestFacilityTask, ClosestFacilityParameters,
+                      Search, screenUtils, ArcGISTiledMapServiceLayer,FeatureLayer,PictureMarkerSymbol,
+                      SimpleMarkerSymbol, SimpleLineSymbol, CartographicLineSymbol, Polyline, ArcGISDynamicMapServiceLayer, ArcGISTiledMapServiceLayer,
+                      esriConfig) {
+
+            dojoCallBack(
+                dom, domConstruct, query, Color, array, parser, registry,
+                urlUtils, Map, esriLang, Graphic, InfoTemplate, GraphicsLayer, SimpleRenderer,
+                Point, FeatureSet,
+                ClosestFacilityTask, ClosestFacilityParameters,
+                Search, screenUtils, ArcGISTiledMapServiceLayer,FeatureLayer,PictureMarkerSymbol,
+                SimpleMarkerSymbol, SimpleLineSymbol, CartographicLineSymbol, Polyline, ArcGISDynamicMapServiceLayer, ArcGISTiledMapServiceLayer,
+                esriConfig
+            );
+        });
+    }
+
+    function dojoCallBack(
         dom, domConstruct, query, Color, array, parser, registry,
         urlUtils, Map, esriLang, Graphic, InfoTemplate, GraphicsLayer, SimpleRenderer,
         Point, FeatureSet,
@@ -52,8 +74,10 @@ $(document).ready(function(){
         SimpleMarkerSymbol, SimpleLineSymbol, CartographicLineSymbol, Polyline, ArcGISDynamicMapServiceLayer, ArcGISTiledMapServiceLayer,
         esriConfig
 
-    ) {
+    ){
         var incidentsGraphicsLayer, routeGraphicLayer, closestFacilityTask;
+        var allStops = obtainStop();
+        var map;
         esriConfig.defaults.io.corsEnabledServers.push("utility.arcgis.com");
 
         // urlUtils.addProxyRule({
@@ -83,29 +107,10 @@ $(document).ready(function(){
             map: map
         }, dom.byId("search2"));
 
-
-        function addSource(search, text) {
-            var sources = search.get("sources");
-            sources.push({
-                featureLayer: new FeatureLayer("http://gis.tamu.edu/arcgis/rest/services/TS/TSbasemap021417/MapServer/0"),
-                searchFields: ["GIS.FCOR.WebMapStructure.BldgAbbr"],
-                suggestionTemplate: "${GIS.FCOR.WebMapStructure.BldgAbbr} ${GIS.FCOR.WebMapStructure.BldgName}",
-                exactMatch: false,
-                name: "TexasA&M",
-                outFields: ["*"],
-                placeholder: text,
-                maxResults: 4,
-                maxSuggestions: 3,
-                enableSuggestions: true,
-                minCharacters: 2
-            });
-            search.set("sources", sources);
-        }
-
-        addSource(search1, "Please enter your starting point");
+        addSource(search1, "Please enter your starting point", FeatureLayer);
         search1.startup();
 
-        addSource(search2, "Please enter your destination");
+        addSource(search2, "Please enter your destination", FeatureLayer);
         search2.startup();
 
         // search1.on("select-result", showLocation);
@@ -128,8 +133,14 @@ $(document).ready(function(){
 
         var symbol1 = new PictureMarkerSymbol({"angle":0,"xoffset":12,"yoffset":12,"type":"esriPMS","url":"http://static.arcgis.com/images/Symbols/Basic/RedFlag.png","imageData":"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","contentType":"image/png","width":34,"height":34});
         var symbol2 = new PictureMarkerSymbol({"angle":0,"xoffset":12,"yoffset":12,"type":"esriPMS","url":"http://static.arcgis.com/images/Symbols/Basic/GreenFlag.png","imageData":"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","contentType":"image/png","width":34,"height":34});
-        map.on("load", function(evtObj) {
-            var map = evtObj.target;
+
+        // map.on("load", function(evtObj) {
+        //     initialFacilities(evtObj, SimpleLineSymbol, SimpleMarkerSymbol, GraphicsLayer, SimpleRenderer,
+        //         params1, params2, Color, Graphic, Point, FeatureSet);
+        // });
+
+        map.on("load", function (evtObj) {
+            var mapp = evtObj.target;
             var line = new SimpleLineSymbol();
             line.setStyle(SimpleLineSymbol.STYLE_NULL);
             var facilityPointSymbol = new SimpleMarkerSymbol();
@@ -150,7 +161,7 @@ $(document).ready(function(){
 
             var incidentsRenderer = new SimpleRenderer(incidentPointSymbol);
             incidentsGraphicsLayer.setRenderer(incidentsRenderer);
-            map.addLayer(incidentsGraphicsLayer);
+            mapp.addLayer(incidentsGraphicsLayer);
 
             routeGraphicLayer = new GraphicsLayer();
 
@@ -162,18 +173,18 @@ $(document).ready(function(){
             var routeRenderer = new SimpleRenderer(routePolylineSymbol);
             routeGraphicLayer.setRenderer(routeRenderer);
 
-            map.addLayer(routeGraphicLayer);
+            mapp.addLayer(routeGraphicLayer);
 
             var facilitiesGraphicsLayer = new GraphicsLayer();
             var facilityRenderer = new SimpleRenderer(facilityPointSymbol);
             facilitiesGraphicsLayer.setRenderer(facilityRenderer);
 
-            map.addLayer(facilitiesGraphicsLayer);
+            mapp.addLayer(facilitiesGraphicsLayer);
 
 
 
             for(var i = 0; i < allStops.length; i++){
-                facilitiesGraphicsLayer.add(new Graphic(new Point(allStops[i].Longtitude,allStops[i].Latitude,map.spatialReference)));
+                facilitiesGraphicsLayer.add(new Graphic(new Point(allStops[i].Longtitude,allStops[i].Latitude,mapp.spatialReference)));
             }
 
 
@@ -181,9 +192,9 @@ $(document).ready(function(){
             facilities.features = facilitiesGraphicsLayer.graphics;
 
             params1.facilities = facilities;
-            params1.outSpatialReference = map.spatialReference;
+            params1.outSpatialReference = mapp.spatialReference;
             params2.facilities = facilities;
-            params2.outSpatialReference = map.spatialReference;
+            params2.outSpatialReference = mapp.spatialReference;
         });
 
         //closestFacilityTask = new ClosestFacilityTask("https://route.arcgis.com/arcgis/rest/services/World/ClosestFacility/NAServer/ClosestFacility_World");
@@ -199,17 +210,6 @@ $(document).ready(function(){
             map.graphics.clear();
             routeGraphicLayer.clear();
             incidentsGraphicsLayer.clear();
-        }
-
-        function tryicon(e) {
-            map.graphics.clear();
-            var point = e.result.feature.geometry;
-            var symbol = new SimpleMarkerSymbol().setStyle(
-                SimpleMarkerSymbol.STYLE_SQUARE).setColor(
-                new Color([0,255,0,0.5])
-            );
-            var graphic = new Graphic(point, symbol);
-            map.graphics.add(graphic);
         }
 
         function showLocation() {
@@ -416,43 +416,8 @@ $(document).ready(function(){
         color['40'] = [255, 255, 0 ];
         color['N_W04'] = [255, 0, 0];
 
-        function addCurrentBuses(routeNum) {
-            var busURL = "http://thehub2.tamu.edu:80/BusRoutesFeed/api/route/" + routeNum + "/buses/mentor";
-            $.ajax({
-                beforeSend: function(req) {
-                    req.setRequestHeader("Accept", "application/json");
-                },
-                async: false,
-                global: false,
-                url: busURL,
-                dataType: "json",
-                success: function (data) {
-                    console.log(data.length);
 
-                    var buses = data;
-                    var pictureMarkerSymbol = new PictureMarkerSymbol('http://icons.iconarchive.com/icons/fasticon/happy-bus/48/bus-green-icon.png', 45, 45);
-                    // var webStyleSymbol = new WebStyleSymbol({
-                    //       name: "Bus",
-                    //       portal: {
-                    //         url: "https://www.arcgis.com"
-                    //       },
-                    //       styleName: "EsriIconsStyle"
-                    // });
-                    pictureMarkerSymbol.setColor(color[routeNum]);
-                    for (var i = 0; i < buses.length; i++) {
-                        console.log(buses[i].GPS.Lat);
-                        console.log(buses[i].GPS.Long);
 
-                        var pointSymbol = new esri.symbol.SimpleMarkerSymbol(); // point
-                        // pointSymbol.setColor([255,0,0]);
-                        var pt = new esri.geometry.Point(buses[i].GPS.Long, buses[i].GPS.Lat, map.spatialReference);
-                        var graphic = new esri.Graphic(pt, pictureMarkerSymbol);
-                        map.graphics.add(graphic);
-
-                    }
-                }
-            });
-        }
         function addGraphics(routeNum) {
 
             ligten(routeNum);
@@ -485,6 +450,42 @@ $(document).ready(function(){
                             }
                         });
                         var graphic = new esri.Graphic(polyline, symbol);
+                        map.graphics.add(graphic);
+                    }
+                }
+            });
+        }
+
+
+        function addCurrentBuses(routeNum) {
+            var busURL = "http://thehub2.tamu.edu:80/BusRoutesFeed/api/route/" + routeNum + "/buses/mentor";
+            $.ajax({
+                beforeSend: function(req) {
+                    req.setRequestHeader("Accept", "application/json");
+                },
+                async: false,
+                global: false,
+                url: busURL,
+                dataType: "json",
+                success: function (data) {
+                    console.log(data.length);
+
+                    var buses = data;
+                    var pictureMarkerSymbol = new PictureMarkerSymbol('http://icons.iconarchive.com/icons/fasticon/happy-bus/48/bus-green-icon.png', 45, 45);
+                    // var webStyleSymbol = new WebStyleSymbol({
+                    //       name: "Bus",
+                    //       portal: {
+                    //         url: "https://www.arcgis.com"
+                    //       },
+                    //       styleName: "EsriIconsStyle"
+                    // });
+                    pictureMarkerSymbol.setColor(color[routeNum]);
+                    for (var i = 0; i < buses.length; i++) {
+                        console.log(buses[i].GPS.Lat);
+                        console.log(buses[i].GPS.Long);
+
+                        var pt = new Point(buses[i].GPS.Long, buses[i].GPS.Lat, map.spatialReference);
+                        var graphic = new Graphic(pt, pictureMarkerSymbol);
                         map.graphics.add(graphic);
                     }
                 }
@@ -559,5 +560,23 @@ $(document).ready(function(){
 
         $('#findDirections').click(showLocation);
 
-    });
-});
+    }
+
+    function addSource(search, text, FeatureLayer) {
+        var sources = search.get("sources");
+        sources.push({
+            featureLayer: new FeatureLayer("http://gis.tamu.edu/arcgis/rest/services/TS/TSbasemap021417/MapServer/0"),
+            searchFields: ["GIS.FCOR.WebMapStructure.BldgAbbr"],
+            suggestionTemplate: "${GIS.FCOR.WebMapStructure.BldgAbbr} ${GIS.FCOR.WebMapStructure.BldgName}",
+            exactMatch: false,
+            name: "TexasA&M",
+            outFields: ["*"],
+            placeholder: text,
+            maxResults: 4,
+            maxSuggestions: 3,
+            enableSuggestions: true,
+            minCharacters: 2
+        });
+        search.set("sources", sources);
+    }
+

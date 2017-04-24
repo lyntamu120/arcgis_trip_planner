@@ -29,20 +29,28 @@ describe("Test the obtainStop function", function () {
 });
 
 describe("Test addTimeTable function", function () {
-
+    beforeEach(function(done) {
+        loadFixtures("timetable.html");
+        addTimeTable('01');
+        setTimeout(function() {
+            done();
+        }, 5);
+    });
 
     it("I should see the timetable if I remove the hidden class of Hidden Div", function () {
-        loadFixtures("timetable.html");
         $("#hiddendiv").removeClass("hidden");
         expect($("#hiddendiv")).not.toHaveClass("hidden");
     });
 
-    it("I should see the timetable of this moment when I use addTimeTable('01')", function () {
-        loadFixtures("banner.html");
-        addTimeTable('02');
+    it("I should see the timetable of this moment when I use addTimeTable('01')", function (done) {
+        expect($("#hiddendiv")).not.toHaveClass("hidden");
+        done();
+    });
+
+    it("I should see the timetable contains Route01 when I call addTimeTable('01')",function (done) {
         var timetable = $("#routeNum");
-        expect(timetable).toContainText("Route 4");
-        expect($("#hiddendiv")).toHaveClass("hidden");
+        expect(timetable).toContainText("Route01");
+        done();
     });
 });
 
