@@ -30,7 +30,14 @@ describe("Test the obtainStop function", function () {
 
 describe("Test addTimeTable function", function () {
 
-    it("I should see the time table of this moment when I use addTimeTable('01')", function () {
+
+    it("I should see the timetable if I remove the hidden class of Hidden Div", function () {
+        loadFixtures("timetable.html");
+        $("#hiddendiv").removeClass("hidden");
+        expect($("#hiddendiv")).not.toHaveClass("hidden");
+    });
+
+    it("I should see the timetable of this moment when I use addTimeTable('01')", function () {
         loadFixtures("banner.html");
         addTimeTable('02');
         var timetable = $("#routeNum");
