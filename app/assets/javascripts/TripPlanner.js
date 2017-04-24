@@ -559,8 +559,5 @@ $(document).ready(function(){
 
         $('#findDirections').click(showLocation);
 
-
-
-
     });
 });
