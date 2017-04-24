@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>TamuTripPlanner</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" >
+    <link rel="stylesheet" href="https://js.arcgis.com/3.20/esri/css/esri.css">
+    <!--<link rel="stylesheet" href="test.css">-->
+    <!--<link rel="stylesheet" href="banner.css" >-->
+    <script
+            src="https://code.jquery.com/jquery-3.2.1.js"
+            integrity="sha256-DZAnKJ/6XZ9si04Hgrsxu/8s717jcIzLy3oi35EouyE="
+            crossorigin="anonymous">
+    </script>
+    <script src="https://js.arcgis.com/3.20/"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <!--<script type="text/javascript" src="stops.js"></script>-->
+    <!--<script type="text/javascript" src="TimeTable.js"></script>-->
+    <!--<script type="text/javascript" src="test.js"></script>-->
+</head>
+<body>
+
+<!-- Navigation -->
+<nav class='navbar navbar-default navbar-fixed-top'>
+    <div class='container-fluid'>
+        <div class='navbar-header'>
+            <button class='navbar-toggle collapsed' data-target='#navbar1' data-toggle='collapse' type='button'>
+                <span class='sr-only'>Toggle navigation</span>
+                <span class='icon-bar'></span>
+                <span class='icon-bar'></span>
+                <span class='icon-bar'></span>
+            </button>
+            <a class='navbar-brand' href='http://www.tamu.edu'>
+                <img height='45' src='http://brandguide.tamu.edu/images/tam-primarymark.png' width='228'>
+            </a>
+        </div>
+        <div class='navbar-collapse collapse' id='navbar1'>
+            <ul class='nav navbar-nav'>
+                <li>
+                    <a data-toggle='modal' href='#dir'>
+                        <span class='glyphicon glyphicon-move'></span>
+                        Directions
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <!-- /.nav-collapse -->
+    </div>
+    <!-- /.container-fluid -->
+</nav>
+
+
+<div class='modal fade modeless' data-backdrop='false' id='dir' role='dialog'>
+    <div class='modal-content'>
+        <div class='modal-header'>
+            <button class='close' data-dismiss='modal' type='button'>×</button>
+            <h4 class='modal-title'>Trip planner</h4>
+        </div>
+        <div class='modal-body'>
+            <label for="start">From:</label>
+            <div id="search1"></div>
+            <label for="end">To:</label>
+            <div id="search2"></div>
+            <br>
+            <button class="btn btn-primary" id="findDirections">Find Routes</button>
+            <button class='btn btn-danger pull-right' id='clearall'>Clear Routes</button>
+        </div>
+        <div class='modal-footer' id='results' style='overflow-y: auto; max-height: 250px; text-align: center;'>
+            <button class='btn btn-default' type = 'button' id='01' value = '01'>01</button>
+            <button class='btn btn-default' type = 'button' id='02' value = '02'>02</button>
+            <button class='btn btn-default' type = 'button' id='03' value = '03'>03</button>
+            <button class='btn btn-default' type = 'button' id='04' value = '04'>04</button>
+            <button class='btn btn-default' type = 'button' id='05' value = '05'>05</button>
+            <button class='btn btn-default' type = 'button' id='06' value = '06'>06</button>
+            <button class='btn btn-default' type = 'button' id='08' value = '08'>08</button>
+            <button class='btn btn-default' type = 'button' id='09' value = '09'>09</button>
+            <button class='btn btn-default' type = 'button' id='N_W04' value = 'N_W04'>N_W04</button>
+            <!-- <h5>Results</h5> -->
+        </div>
+    </div>
+</div>
+
+
+
+<div id="map"></div>
+<div class="container-fluid hidden" id = "hiddendiv">
+
+    <div id="TimeTable" class="col-xs-4 pull-right">
+        <br>
+        <br>
+        <br>
+        <table class="table table-bordered table-striped" id="TimeTableGrid">
+            <div class="row">
+                <div class="col-xs-4" id = "TableDate" style="font-size: 26px">
+                    <span>2017/04/17</span>
+                </div>
+                <div class="col-xs-4 col-xs-offset-1" id = "routeNum" style="font-size: 26px">
+                    <span>Route 4</span>
+                </div>
+                <div class="col-xs-1 col-xs-offset-1" >
+                    <button class="btn btn-lg" id="closeTable">x</button>
+                </div>
+            </div>
+            <tr>
+                <td>07:15A</td>
+                <td>07:15A</td>
+                <td>07:15A</td>
+                <td>07:15A</td>
+                <td>07:15A</td>
+            </tr>
+        </table>
+
+    </div>
+</div>
+
+
+</div>
+
+
+
+</body>
+</html>
