@@ -15,8 +15,8 @@ gem 'jbuilder',     '2.4.1'
 group :development, :test do
   gem 'sqlite3', '1.3.12'
   gem 'byebug',  '9.0.0', platform: :mri
-  gem 'jasmine'
-  gem 'jasmine-jquery-rails'
+  # gem 'jasmine'
+  # gem 'jasmine-jquery-rails'
 end
 
 group :development do
