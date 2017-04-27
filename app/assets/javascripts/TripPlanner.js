@@ -613,7 +613,13 @@ function dojoCallBack(
         });
     });
 
-    $('#clearall').click(clearGraphics);
+    $('#clearall').click(function () {
+        clearGraphics();
+        removeAllLigten();
+        $("#hiddendiv").addClass('hidden');
+    });
+
+
     $("#closeTable").click(function(){
         $("#hiddendiv").addClass('hidden');
     });
