@@ -245,6 +245,7 @@ function dojoCallBack(
                 params1.defaultCutoff = 3.5;
                 params1.defaultTargetFacilityCount = 4;
             }
+
             if(search2.searchResults[0][0].name == 'Memorial Student Center'){
                 params2.travelDirection = "From_FACILITY"
                 params2.defaultCutoff= 10.0;
@@ -529,7 +530,7 @@ function dojoCallBack(
                     var pointSymbol = new esri.symbol.SimpleMarkerSymbol(); // point
                     // pointSymbol.setColor([255,0,0]);
                     var pt = new esri.geometry.Point(buses[i].GPS.Long, buses[i].GPS.Lat, map.spatialReference);
-                    var attr = {"Seats left ": buses[i].APC.PassengerCapacity - buses[i].APC.TotalPassenger};//, "Next stops departure time": buses[i].NextStops.ScheduledDepartTime};
+                    var attr = {"Capacity ": buses[i].APC.TotalPassenger / 100};//, "Next stops departure time": buses[i].NextStops.ScheduledDepartTime};
                     var infoTemplate = new InfoTemplate("Route " + routeNum);
                     var busGraphic = new esri.Graphic(pt, pictureMarkerSymbol, attr, infoTemplate);
                     map.graphics.add(busGraphic);
