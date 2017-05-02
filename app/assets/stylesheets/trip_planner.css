@@ -14,12 +14,12 @@ body,html,#map{margin:0;padding:0;height:100%;width:100%;}
     padding-right:5px;
 }
 /*change the default css*/
-.arcgisSearch .searchBtn {
-    display:none;
-}
-.arcgisSearch .searchGroup .searchInput {
-    border-right: 1px solid #57585A;
-}
+/*.arcgisSearch .searchBtn {*/
+    /*display:none;*/
+/*}*/
+/*.arcgisSearch .searchGroup .searchInput {*/
+    /*border-right: 1px solid #57585A;*/
+/*}*/
 .Center {
     height:30px;
     width:70px;
@@ -37,4 +37,7 @@ body,html,#map{margin:0;padding:0;height:100%;width:100%;}
 }
 h4{
     text-align: center;
+}
+#dir {
+    width: 340px;
 }

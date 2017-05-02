@@ -285,123 +285,140 @@ function dojoCallBack(
             params1.incidents = incidents1;
             params2.incidents = incidents2;
 
-            closestFacilityTask.solve(params1, function(solveResult1){
-                console.log(solveResult1);
-                var points1 = [];
-                array.forEach(solveResult1.routes, function(route1, index1){
-                    //build an array of route info
-                    //dojo array.map can create a new array
-                    //solveResult1.derections[0].features is an array, each feature is a graphic object
-                    var attr = array.map(solveResult1.directions[index1].features, function(feature){
-                        return feature.attributes.text;
-                    });
-                    //var infoTemplate = new InfoTemplate("Attributes", "${*}");
-                    //console.log(route);
-                    //route.setInfoTemplate(infoTemplate);
+            console.log("test params start.");
+            console.log(params1);
+            console.log(params2);
+            console.log("test params end.");
 
-                    //route1 is also a graphic object
-                    route1.setAttributes(attr);
-
-                    //find the coordi of cloest point
-                    destination1 = route1.attributes[route1.attributes.length - 1];
-                    destinationArray1 = destination1.split(" ");
-                    destinationId1 = destinationArray1[3];
-                    stopId1 = +destinationId1;
-
-                    stopPoint1X = params1.facilities.features[stopId1 - 1].geometry.x;
-                    stopPoint1Y = params1.facilities.features[stopId1 - 1].geometry.y;
-
-                    stopPoint1 = [];
-                    stopPoint1.push(stopPoint1X);
-                    stopPoint1.push(stopPoint1Y);
-                    stopPoint1.push(allStops[stopId1 - 1].Num);
-                    stopPoint1.push(stopId1 - 1);
-                    stopPoint1.push(route1);
-                    points1.push(stopPoint1);
-                    //routeGraphicLayer.add(route1);
-
+                closestFacilityTask.solve(params1, function (solveResult1) {
+                    solveFT(solveResult1);
+                }, function (err) {
+                    alert("cao ni ma");
+                    alert(err.messages);
                 });
 
-                closestFacilityTask.solve(params2, function(solveResult2){
-                    var points2 = [];
-                    array.forEach(solveResult2.routes, function(route2, index2){
-                        //build an array of route info
-                        var attr = array.map(solveResult2.directions[index2].features, function(feature){
-                            return feature.attributes.text;
+
+            function solveFT(solveResult1){
+                        var points1 = [];
+                        array.forEach(solveResult1.routes, function(route1, index1){
+                            //build an array of route info
+                            //dojo array.map can create a new array
+                            //solveResult1.derections[0].features is an array, each feature is a graphic object
+                            var attr = array.map(solveResult1.directions[index1].features, function(feature){
+                                return feature.attributes.text;
+                            });
+                            //var infoTemplate = new InfoTemplate("Attributes", "${*}");
+                            //console.log(route);
+                            //route.setInfoTemplate(infoTemplate);
+
+                            //route1 is also a graphic object
+                            route1.setAttributes(attr);
+
+                            //find the coordi of cloest point
+                            destination1 = route1.attributes[route1.attributes.length - 1];
+                            destinationArray1 = destination1.split(" ");
+                            destinationId1 = destinationArray1[3];
+                            stopId1 = +destinationId1;
+
+                            stopPoint1X = params1.facilities.features[stopId1 - 1].geometry.x;
+                            stopPoint1Y = params1.facilities.features[stopId1 - 1].geometry.y;
+
+                            stopPoint1 = [];
+                            stopPoint1.push(stopPoint1X);
+                            stopPoint1.push(stopPoint1Y);
+                            stopPoint1.push(allStops[stopId1 - 1].Num);
+                            stopPoint1.push(stopId1 - 1);
+                            stopPoint1.push(route1);
+                            points1.push(stopPoint1);
+                            //routeGraphicLayer.add(route1);
+
                         });
-                        //var infoTemplate = new InfoTemplate("Attributes", "${*}");
-                        //console.log(route);
 
-                        //route.setInfoTemplate(infoTemplate);
-                        route2.setAttributes(attr);
-                        destination2 = route2.attributes[route2.attributes.length - 1];
-                        if(search2.searchResults[0][0].name != 'Memorial Student Center') destination2 = route2.attributes[0];
-                        destinationArray2 = destination2.split(" ");
-                        destinationId2 = destinationArray2[3];
-                        stopId2 = +destinationId2;
+                        closestFacilityTask.solve(params2, function(solveResult2){
+                            var points2 = [];
+                            array.forEach(solveResult2.routes, function(route2, index2){
+                                //build an array of route info
+                                var attr = array.map(solveResult2.directions[index2].features, function(feature){
+                                    return feature.attributes.text;
+                                });
+                                //var infoTemplate = new InfoTemplate("Attributes", "${*}");
+                                //console.log(route);
 
-                        stopPoint2X = params2.facilities.features[stopId2-1].geometry.x;
-                        stopPoint2Y = params2.facilities.features[stopId2-1].geometry.y;
-                        stopPoint2 = [];
-                        stopPoint2.push(stopPoint2X);
-                        stopPoint2.push(stopPoint2Y);
-                        stopPoint2.push(allStops[stopId2-1].Num);
-                        stopPoint2.push(stopId2-1);
-                        stopPoint2.push(route2);
-                        points2.push(stopPoint2);
-                        //routeGraphicLayer.add(route2);
-                    });
-                    //  console.log(points1);
-                    //  console.log(points2);
-                    //  addGraphics("04");
-                    var r1 = [];
-                    var r2 = [];
-                    var min = [];
-                    for(var j = 0; j < points1.length; j++){
-                        for(var k = 0; k < points2.length; k++){
-                            if(points1[j][2] == points2[k][2]){
-                                min[points1[j][2]] = 200;
-                            }
-                        }
-                    }
+                                //route.setInfoTemplate(infoTemplate);
+                                route2.setAttributes(attr);
+                                destination2 = route2.attributes[route2.attributes.length - 1];
+                                if(search2.searchResults[0][0].name != 'Memorial Student Center') destination2 = route2.attributes[0];
+                                destinationArray2 = destination2.split(" ");
+                                destinationId2 = destinationArray2[3];
+                                stopId2 = +destinationId2;
 
-
-
-
-                    removeAllLigten();
-                    console.log(points1);
-                    console.log(points2);
-
-                    for(var j = 0; j < points1.length; j++){
-                        for(var k = 0; k < points2.length; k++){
-                            if(points1[j][2] == points2[k][2]){
-                                if(points2[k][3] - points1[j][3] > 0 && points2[k][3] - points1[j][3] < min[points1[j][2]]){
-                                    console.log("there is at least a suitable route");
-                                    min[points1[j][2]] = points2[k][3] - points1[j][3];
-                                    r1[points1[j][2]] = points1[j][4];
-                                    r2[points1[j][2]] = points2[k][4];
-
-                                    map.graphics.clear();
-                                    removeAllLigten();
-                                    addGraphics(points1[j][2]);
-                                    addCurrentBuses(points1[j][2]);
-                                    addStops(points1[j][2]);
-                                    addPointsAndText(points1[j][2]);
-
-                                    var p1 = new Point(points1[j][0], points1[j][1], map.spatialReference);
-                                    var p2 = new Point(points2[k][0], points2[k][1], map.spatialReference);
-                                    var graphic1 = new Graphic(p1, symbolStart);
-                                    map.graphics.add(graphic1);
-                                    var graphic2 = new Graphic(p2, symbolEnd);
-                                    map.graphics.add(graphic2);
+                                stopPoint2X = params2.facilities.features[stopId2-1].geometry.x;
+                                stopPoint2Y = params2.facilities.features[stopId2-1].geometry.y;
+                                stopPoint2 = [];
+                                stopPoint2.push(stopPoint2X);
+                                stopPoint2.push(stopPoint2Y);
+                                stopPoint2.push(allStops[stopId2-1].Num);
+                                stopPoint2.push(stopId2-1);
+                                stopPoint2.push(route2);
+                                points2.push(stopPoint2);
+                                //routeGraphicLayer.add(route2);
+                            });
+                            //  console.log(points1);
+                            //  console.log(points2);
+                            //  addGraphics("04");
+                            var r1 = [];
+                            var r2 = [];
+                            var min = [];
+                            for(var j = 0; j < points1.length; j++){
+                                for(var k = 0; k < points2.length; k++){
+                                    if(points1[j][2] == points2[k][2]){
+                                        min[points1[j][2]] = 200;
+                                    }
                                 }
                             }
-                        }
-                    }
 
-                });
 
-            });
+
+
+
+                            console.log("candidate stops" + points1);
+                            console.log("candidate stops" + points2);
+
+                            for(var j = 0; j < points1.length; j++){
+                                for(var k = 0; k < points2.length; k++){
+                                    if(points1[j][2] == points2[k][2]){
+                                        if(points2[k][3] - points1[j][3] > 0 && points2[k][3] - points1[j][3] < min[points1[j][2]]){
+                                            console.log("there is at least a suitable route");
+                                            min[points1[j][2]] = points2[k][3] - points1[j][3];
+                                            r1[points1[j][2]] = points1[j][4];
+                                            r2[points1[j][2]] = points2[k][4];
+
+                                            map.graphics.clear();
+                                            removeAllLigten();
+                                            addGraphics(points1[j][2]);
+                                            addCurrentBuses(points1[j][2]);
+                                            addStops(points1[j][2]);
+                                            addPointsAndText(points1[j][2]);
+                                            $("#text").text("Please take route " + points1[j][2] + ", get on the bus at the red mark and get off at the green mark.");
+
+                                            var p1 = new Point(points1[j][0], points1[j][1], map.spatialReference);
+                                            var p2 = new Point(points2[k][0], points2[k][1], map.spatialReference);
+                                            var graphic1 = new Graphic(p1, symbolStart);
+                                            map.graphics.add(graphic1);
+                                            var graphic2 = new Graphic(p2, symbolEnd);
+                                            map.graphics.add(graphic2);
+                                        }
+                                    }
+                                }
+                            }
+
+                            if ($("#text").is(':empty')) {
+                                $('#text').text("There are no suitable stops because even the closest stop takes very long time to walk to.");
+                            }
+
+                        });
+
+                };
             // });
         } else if (search1.searchResults == null && search2.searchResults == null) {
             $('.arcgisSearch .searchGroup .searchInput').css("border-color","red");
@@ -412,6 +429,8 @@ function dojoCallBack(
         } else {
             $('.arcgisSearch .searchGroup .searchInput').last().css("border-color","red");
         }
+
+
 
     }
 
@@ -583,6 +602,7 @@ function dojoCallBack(
     $('#clearall').click(function () {
         clearGraphics();
         removeAllLigten();
+        $("#text").empty();
         $("#hiddendiv").addClass('hidden');
     });
 
@@ -591,7 +611,11 @@ function dojoCallBack(
         $("#hiddendiv").addClass('hidden');
     });
 
-    $('#findDirections').click(showLocation);
+    $('#findDirections').click(function () {
+        removeAllLigten();
+        $("#text").empty();
+            showLocation();
+    });
 
 }
 
