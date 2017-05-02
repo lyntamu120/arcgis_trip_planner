@@ -292,9 +292,12 @@ function dojoCallBack(
 
                 closestFacilityTask.solve(params1, function (solveResult1) {
                     solveFT(solveResult1);
-                }, function (err) {
-                    alert("cao ni ma");
-                    alert(err.messages);
+                    setTimeout(function() {
+                        if ($("#text").is(':empty')) {
+                            $('#text').text("There are no suitable stops because even the closest stop takes very long time to walk to.");
+                        }
+                    }, 2000);
+
                 });
 
 
@@ -623,7 +626,7 @@ function addSource(search, text, FeatureLayer) {
     var sources = search.get("sources");
     sources.push({
         featureLayer: new FeatureLayer("http://gis.tamu.edu/arcgis/rest/services/TS/TSbasemap021417/MapServer/0"),
-        searchFields: ["GIS.FCOR.WebMapStructure.BldgAbbr"],
+        searchFields: ["GIS.FCOR.WebMapStructure.BldgAbbr", "GIS.FCOR.WebMapStructure.BldgName"],
         suggestionTemplate: "${GIS.FCOR.WebMapStructure.BldgAbbr} ${GIS.FCOR.WebMapStructure.BldgName}",
         exactMatch: false,
         name: "TexasA&M",
