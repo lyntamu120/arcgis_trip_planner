@@ -697,7 +697,7 @@ function addSource(search, text, FeatureLayer) {
     var sources = search.get("sources");
     sources.push({
         featureLayer: new FeatureLayer("http://gis.tamu.edu/arcgis/rest/services/TS/TSbasemap021417/MapServer/0"),
-        searchFields: ["GIS.FCOR.WebMapStructure.BldgAbbr","GIS.FCOR.WebMapStructure.BldgName"],
+        searchFields: ["GIS.FCOR.WebMapStructure.BldgAbbr"],
         suggestionTemplate: "${GIS.FCOR.WebMapStructure.BldgAbbr} ${GIS.FCOR.WebMapStructure.BldgName}",
         exactMatch: false,
         name: "TexasA&M",
