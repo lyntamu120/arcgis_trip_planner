@@ -288,8 +288,32 @@ function dojoCallBack(
                 });
 
             function solveFT(solveResult1){
-                console.log('kkkk');
                 var points1 = [];
+
+                if(search1.searchResults[0][0].name == 'Memorial Student Center'){
+                    stopspecial = [];
+                    stopspecial.push(allStops[8].Longtitude);
+                    stopspecial.push(allStops[8].Latitude);
+                    stopspecial.push(allStops[8].Num);
+                    stopspecial.push(8);
+                    points1.push(stopspecial);
+                }
+
+                if(search1.searchResults[0][0].name == 'Reed Arena'){
+                    stopspecial2 = [];
+                    stopspecial2.push(allStops[7].Longtitude);
+                    stopspecial2.push(allStops[7].Latitude);
+                    stopspecial2.push(allStops[7].Num);
+                    stopspecial2.push(7);
+                    points1.push(stopspecial2);
+                    stopspecial5 = [];
+                    stopspecial5.push(allStops[56].Longtitude);
+                    stopspecial5.push(allStops[56].Latitude);
+                    stopspecial5.push(allStops[56].Num);
+                    stopspecial5.push(56);
+                    points1.push(stopspecial5);
+                }
+
                 array.forEach(solveResult1.routes, function(route1, index1){
 
                     //build an array of route info
@@ -324,7 +348,32 @@ function dojoCallBack(
                 });
 
                 closestFacilityTask.solve(params2, function(solveResult2){
+
                     var points2 = [];
+
+                    if(search2.searchResults[0][0].name == 'Memorial Student Center'){
+                        stopspecial1 = [];
+                        stopspecial1.push(allStops[8].Longtitude);
+                        stopspecial1.push(allStops[8].Latitude);
+                        stopspecial1.push(allStops[8].Num);
+                        stopspecial1.push(8);
+                        points2.push(stopspecial1);
+                    }
+                    if(search2.searchResults[0][0].name == 'Reed Arena'){
+                        stopspecial3 = [];
+                        stopspecial3.push(allStops[7].Longtitude);
+                        stopspecial3.push(allStops[7].Latitude);
+                        stopspecial3.push(allStops[7].Num);
+                        stopspecial3.push(7);
+                        points2.push(stopspecial3);
+                        stopspecial4 = [];
+                        stopspecial4.push(allStops[56].Longtitude);
+                        stopspecial4.push(allStops[56].Latitude);
+                        stopspecial4.push(allStops[56].Num);
+                        stopspecial4.push(56);
+                        points2.push(stopspecial4);
+                    }
+
                     array.forEach(solveResult2.routes, function(route2, index2){
                         //build an array of route info
                         var attr = array.map(solveResult2.directions[index2].features, function(feature){
@@ -350,10 +399,12 @@ function dojoCallBack(
                     var r1 = [];
                     var r2 = [];
                     var min = [];
+                    var max = [];
                     for(var j = 0; j < points1.length; j++){
                         for(var k = 0; k < points2.length; k++){
                             if(points1[j][2] == points2[k][2]){
                                 min[points1[j][2]] = 200;
+                                max[points1[j][2]] = 0;
                             }
                         }
                     }
@@ -373,8 +424,25 @@ function dojoCallBack(
                                     addCurrentBuses(points1[j][2]);
                                     addStops(points1[j][2]);
                                     addPointsAndText(points1[j][2]);
-                                    $("#text").text("Please take route " + points1[j][2] + ", get on the bus at the red mark and get off at the green mark.");
 
+                                    var p1 = new Point(points1[j][0], points1[j][1], map.spatialReference);
+                                    var p2 = new Point(points2[k][0], points2[k][1], map.spatialReference);
+                                    var graphic1 = new Graphic(p1, symbolStart);
+                                    map.graphics.add(graphic1);
+                                    var graphic2 = new Graphic(p2, symbolEnd);
+                                    map.graphics.add(graphic2);
+                                } else if (points2[k][3] - points1[j][3] < 0 && Math.abs(points2[k][3] - points1[j][3]) > max[points1[j][2]]){
+                                    find = true;
+                                    console.log("there is at least a suitable route");
+                                    max[points1[j][2]] = points2[k][3] - points1[j][3];
+                                    r1[points1[j][2]] = points1[j][4];
+                                    r2[points1[j][2]] = points2[k][4];
+                                    map.graphics.clear();
+                                    removeAllLigten();
+                                    addGraphics(points1[j][2]);
+                                    addCurrentBuses(points1[j][2]);
+                                    addStops(points1[j][2]);
+                                    addPointsAndText(points1[j][2]);
                                     var p1 = new Point(points1[j][0], points1[j][1], map.spatialReference);
                                     var p2 = new Point(points2[k][0], points2[k][1], map.spatialReference);
                                     var graphic1 = new Graphic(p1, symbolStart);
@@ -407,9 +475,6 @@ function dojoCallBack(
         } else {
             $('.arcgisSearch .searchGroup .searchInput').last().css("border-color","red");
         }
-
-
-
     }
 
     //set colors for each route
@@ -437,7 +502,7 @@ function dojoCallBack(
 
     // draw routes
     function addGraphics(routeNum) {
-
+        $("#text").text("Please take route " + routeNum + ", get on the bus at the red mark and get off at the green mark.");
         ligten(routeNum);
         var routeURL = "http://thehub2.tamu.edu:80/BusRoutesFeed/api/route/" + routeNum + "/pattern";
         $.ajax({
@@ -474,33 +539,76 @@ function dojoCallBack(
         });
     }
 
+
+
+    // function addCurrentBuses(routeNum) {
+    //     var busURL = "http://thehub2.tamu.edu:80/BusRoutesFeed/api/route/" + routeNum + "/buses/mentor";
+    //     $.ajax({
+    //         beforeSend: function(req) {
+    //             req.setRequestHeader("Accept", "application/json");
+    //         },
+    //         async: true,
+    //         global: false,
+    //         url: busURL,
+    //         dataType: "json",
+    //         success: function (data) {
+    //
+    //
+    //             var buses = data;
+    //             var pictureMarkerSymbol = new PictureMarkerSymbol('http://icons.iconarchive.com/icons/fasticon/happy-bus/48/bus-green-icon.png', 35, 35);
+    //
+    //             pictureMarkerSymbol.setColor(color[routeNum]);
+    //             for (var i = 0; i < buses.length; i++) {
+    //
+    //                 // console.log(buses[i].NextStops);
+    //
+    //                 var pointSymbol = new esri.symbol.SimpleMarkerSymbol(); // point
+
+    //                 var pt = new esri.geometry.Point(buses[i].GPS.Long, buses[i].GPS.Lat, map.spatialReference);
+    //                 var attr = {"Capacity ": buses[i].APC.TotalPassenger / 100};//, "Next stops departure time": buses[i].NextStops.ScheduledDepartTime};
+    //                 var infoTemplate = new InfoTemplate("Route " + routeNum);
+    //                 var busGraphic = new esri.Graphic(pt, pictureMarkerSymbol, attr, infoTemplate);
+    //                 map.graphics.add(busGraphic);
+    //
+    //             }
+    //         }
+    //     });
+    // }
+
     function addCurrentBuses(routeNum) {
         var busURL = "http://thehub2.tamu.edu:80/BusRoutesFeed/api/route/" + routeNum + "/buses/mentor";
         $.ajax({
             beforeSend: function(req) {
                 req.setRequestHeader("Accept", "application/json");
             },
-            async: true,
+            async: false,
             global: false,
             url: busURL,
             dataType: "json",
             success: function (data) {
-                var buses = data;
-                var pictureMarkerSymbol = new PictureMarkerSymbol('http://icons.iconarchive.com/icons/fasticon/happy-bus/48/bus-green-icon.png', 35, 35);
+                console.log(data.length);
 
+                var buses = data;
+                var pictureMarkerSymbol = new PictureMarkerSymbol('http://icons.iconarchive.com/icons/fasticon/happy-bus/48/bus-green-icon.png', 45, 45);
                 pictureMarkerSymbol.setColor(color[routeNum]);
                 for (var i = 0; i < buses.length; i++) {
 
+                    var pointSymbol = new esri.symbol.SimpleMarkerSymbol(); // point
+                    // pointSymbol.setColor([255,0,0]);
                     var pt = new esri.geometry.Point(buses[i].GPS.Long, buses[i].GPS.Lat, map.spatialReference);
                     var attr = {"Capacity ": buses[i].APC.TotalPassenger / 100};//, "Next stops departure time": buses[i].NextStops.ScheduledDepartTime};
                     var infoTemplate = new InfoTemplate("Route " + routeNum);
-                    var busGraphic = new esri.Graphic(pt, pictureMarkerSymbol, attr, infoTemplate);
-                    map.graphics.add(busGraphic);
+                    var graphic = new esri.Graphic(pt, pictureMarkerSymbol, attr, infoTemplate);
+                    map.graphics.add(graphic);
 
                 }
             }
         });
     }
+
+
+
+
 
     function addStops(routeNum) {
         var stopsURL = "http://thehub2.tamu.edu:80/BusRoutesFeed/api/route/" + routeNum + "/stops";
