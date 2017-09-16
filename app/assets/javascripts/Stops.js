@@ -33,7 +33,7 @@ function obtainStop() {
             index = index + 1;
         }
     }
-    var extraStop = obtainSingleStop("N_W04");
+    var extraStop = obtainSingleStop("N0104");
     for (var j = 0; j < stops.length; j++) {
         allStops[index] = {};
         allStops[index].Longtitude = extraStop[j].Longtitude;

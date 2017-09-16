@@ -91,7 +91,7 @@ function dojoCallBack(
     parser.parse();
     map = new Map("map");
     var layer;
-    layer = new ArcGISTiledMapServiceLayer("http://gis.tamu.edu/arcgis/rest/services/TS/TSbasemap021417/MapServer");
+    layer = new ArcGISTiledMapServiceLayer("http://gis.tamu.edu/arcgis/rest/services/FCOR/BaseMap_081517/MapServer");
     map.addLayer(layer);
 
     // set the search widgets
@@ -696,9 +696,9 @@ function dojoCallBack(
 function addSource(search, text, FeatureLayer) {
     var sources = search.get("sources");
     sources.push({
-        featureLayer: new FeatureLayer("http://gis.tamu.edu/arcgis/rest/services/TS/TSbasemap021417/MapServer/0"),
-        searchFields: ["GIS.FCOR.WebMapStructure.BldgAbbr","GIS.FCOR.WebMapStructure.BldgName"],
-        suggestionTemplate: "${GIS.FCOR.WebMapStructure.BldgAbbr} ${GIS.FCOR.WebMapStructure.BldgName}",
+        featureLayer: new FeatureLayer("http://gis.tamu.edu/arcgis/rest/services/FCOR/BaseMap_081517/MapServer/2"),
+        searchFields: ["BldgAbbr","BldgName"],
+        suggestionTemplate: "${BldgAbbr} ${BldgName}",
         exactMatch: false,
         name: "TexasA&M",
         outFields: ["*"],
