@@ -38,7 +38,7 @@ function obtainStop() {
         allStops[index] = {};
         allStops[index].Longtitude = extraStop[j].Longtitude;
         allStops[index].Latitude = extraStop[j].Latitude;
-        allStops[index].Num = "N0W04";
+        allStops[index].Num = "N0104";
         index = index + 1;
     }
     return allStops;
