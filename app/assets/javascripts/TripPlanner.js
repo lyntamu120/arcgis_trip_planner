@@ -80,18 +80,10 @@ function dojoCallBack(
     var map;
     esriConfig.defaults.io.corsEnabledServers.push("utility.arcgis.com");
 
-    // urlUtils.addProxyRule({
-    //   urlPrefix: "route.arcgis.com",
-    //   //proxyUrl: "http://localhost/~good/PHP/proxy.php"
-    //   //proxyUrl: "http://utility.arcgis.com/usrsvcs/appservices/WLVOPaOWpFFMRAs4/rest/services/World/ClosestFacility/NAServer/ClosestFacility_World"
-    //   proxyUrl: "http://utility.arcgis.com/usrsvcs/appservices/yWcaHxyNfdwJOiG2/rest/services/World/Route/NAServer/Route_World"
-    // });
-
     //add the map
     parser.parse();
     map = new Map("map");
-    var layer;
-    layer = new ArcGISTiledMapServiceLayer("http://gis.tamu.edu/arcgis/rest/services/FCOR/BaseMap_081517/MapServer");
+    var layer = new ArcGISTiledMapServiceLayer(mainMapLayerUrl);
     map.addLayer(layer);
 
     // set the search widgets
